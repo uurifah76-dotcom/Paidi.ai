@@ -8,13 +8,13 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 2. Inisialisasi Session State (Termasuk Konfigurasi Pengaturan)
+# 2. Inisialisasi Session State
 if "active_menu" not in st.session_state: 
     st.session_state.active_menu = "Beranda"
 if "active_tab" not in st.session_state: 
     st.session_state.active_tab = "Buat Klip"
 if "credits" not in st.session_state: 
-    st.session_state.credits = 5  # Contoh sisa kredit default
+    st.session_state.credits = 5
 
 # State untuk konfigurasi pengaturan
 if "cfg_durasi" not in st.session_state: st.session_state.cfg_durasi = "Standar (30-60 detik)"
@@ -26,7 +26,7 @@ query_params = st.query_params
 if "menu" in query_params:
     st.session_state.active_menu = query_params["menu"]
 
-# 3. CSS Kustom Sesuai Tampilan Dark Mode
+# 3. CSS Kustom Sesuai Tampilan Dark Mode Asli
 st.markdown("""
     <style>
     [data-testid="stHeader"] { display: none !important; }
@@ -141,7 +141,7 @@ if st.session_state.active_menu == "Beranda":
         st.markdown("<p style='color: #9ca3af; font-size: 0.85rem; margin-bottom: 5px;'>Tempel Tautan YouTube Anda</p>", unsafe_allow_html=True)
         link = st.text_input("Link YouTube", placeholder="https://youtube.com/watch?v=...", label_visibility="collapsed")
         
-        # Ringkasan konfigurasi aktif saat ini
+        # Indikator Mode Konfigurasi Aktif
         st.markdown(f"""
             <div style="font-size: 0.75rem; color: #9ca3af; margin: 10px 0 15px 0;">
                 🛠️ Mode Aktif: <span style="color: #38bdf8;">{st.session_state.cfg_durasi}</span> | <span style="color: #38bdf8;">{st.session_state.cfg_rasio}</span>
@@ -158,7 +158,7 @@ if st.session_state.active_menu == "Beranda":
                 st.warning("Silakan masukkan tautan YouTube terlebih dahulu.")
 
         # ==========================================
-        # BAGIAN INFORMASI PERUSAHAAN & FOUNDER
+        # INFORMASI LEGALITAS & FOUNDER (TETAP ADA)
         # ==========================================
         st.markdown("<br><hr style='border: 0; border-top: 1px solid #1f2937; margin: 25px 0;'>", unsafe_allow_html=True)
         
@@ -196,7 +196,6 @@ if st.session_state.active_menu == "Beranda":
         st.markdown("<h3 style='color: #ffffff; font-size: 1.1rem; margin-top:0;'>⚙️ Pengaturan Studio AI</h3>", unsafe_allow_html=True)
         st.markdown("<p style='color: #9ca3af; font-size: 0.8rem;'>Konfigurasi di bawah ini akan otomatis diterapkan saat Anda memproses klip baru.</p>", unsafe_allow_html=True)
         
-        # Input Pengaturan yang tersimpan ke Session State
         st.session_state.cfg_durasi = st.selectbox(
             "Durasi Klip", 
             ["Pendek (15-30 detik)", "Standar (30-60 detik)", "Panjang (60-90 detik)"],
@@ -253,7 +252,7 @@ elif st.session_state.active_menu == "Bantuan":
     st.markdown("<h2 style='color: white; font-size: 1.3rem;'>Pusat Bantuan</h2>", unsafe_allow_html=True)
     st.link_button("💬 Chat WhatsApp Dukungan CS", "https://wa.me/6283853413171", use_container_width=True)
 
-# 6. Render Navigasi Bawah
+# 6. Render Navigasi Bawah Asli
 active_b = "active" if st.session_state.active_menu == "Beranda" else ""
 active_p = "active" if st.session_state.active_menu == "Pembayaran" else ""
 active_a = "active" if st.session_state.active_menu == "Affiliate" else ""
