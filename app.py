@@ -8,7 +8,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. CSS Kustom untuk Tampilan Profesional (Font Inter, Spacing, & Modern UI)
+# 2. CSS Kustom untuk Tampilan Profesional & Pemangkasan Foto Profil Menjadi Lingkaran Sempurna
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
@@ -46,6 +46,15 @@ st.markdown("""
         text-align: center;
         border: 1px solid rgba(0, 123, 255, 0.2);
     }
+    /* Membuat foto profil menjadi lingkaran sempurna dan tajam */
+    .profile-img img {
+        border-radius: 50% !important;
+        width: 140px !important;
+        height: 140px !important;
+        object-fit: cover !important;
+        border: 3px solid #00a8ff !important;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
     .stButton>button {
         width: 100%;
         border-radius: 10px;
@@ -68,7 +77,7 @@ menu = st.sidebar.radio("", ["Beranda & Studio", "Kredit & Paket", "Program Affi
 
 # 4. Halaman Beranda & Studio
 if menu == "Beranda & Studio":
-    # Header Utama (Logo Besar + Judul)
+    # Header Utama dengan Logo 'P' Ukuran Besar di Samping Judul
     col1, col2 = st.columns([1, 4.5], vertical_alignment="center")
     with col1: 
         st.image("47836-removebg-preview.png", width=95)
@@ -112,17 +121,39 @@ if menu == "Beranda & Studio":
     with c_f2:
         st.markdown("<div class='card'><h4>2. Deep Scanning</h4><p style='font-size:0.9em; opacity:0.8;'>AI menyeleksi momen terbaik untuk engagement maksimal.</p></div>", unsafe_allow_html=True)
 
-    # Profil Founder
+    # Profil Founder (Dengan Bingkai Foto Lingkaran Sempurna)
     st.subheader("👤 Tentang Founder")
     st.markdown('<div class="profile-box">', unsafe_allow_html=True)
+    
     _, col_img, _ = st.columns([1, 1.2, 1])
     with col_img: 
+        st.markdown('<div class="profile-img">', unsafe_allow_html=True)
         st.image("IMG-20260521-WA0022.jpg", width=140)
+        st.markdown('</div>', unsafe_allow_html=True)
+        
     st.markdown("""
         <h3 style="margin-top:20px;">Usman Shidiq</h3>
         <p style="color:#00a8ff; font-weight:600;">Founder & CEO of Paidi.ai</p>
         <p style="font-size:0.95em; line-height:1.6; opacity:0.9;">
             "Misi kami adalah mendemokratisasi teknologi editing video. Paidi.ai hadir untuk membantu kreator Indonesia memangkas waktu produksi tanpa mengorbankan kualitas konten."
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Informasi Korporat Lengkap di Bagian Bawah
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("### 🏢 Informasi Korporat & Kontak Resmi")
+    st.markdown("""
+    <div class="card" style="border-left: 4px solid #007bff;">
+        <p style="font-size: 14px; line-height: 1.6; margin-bottom: 12px;">
+            <strong>PT Paidi.ai Group</strong> didirikan pada tahun <strong>2026</strong> di Kota Malang, Jawa Timur oleh <strong>Usman Shidiq</strong>. Kami berkomitmen membangun fondasi perangkat lunak rintisan berbasis kecerdasan buatan untuk revolusi konten digital Indonesia.
+        </p>
+        <hr style="border-color: rgba(255,255,255,0.1); margin: 14px 0;">
+        <p style="font-size: 13px; margin: 0; opacity: 0.9; line-height: 1.6;">
+            📍 <strong>Alamat Kantor:</strong> Ruko WOW Sawojajar, Kec. Kedungkandang, Kota Malang, Jawa Timur 65139<br>
+            📞 <strong>WhatsApp Korporat:</strong> 083853413171<br>
+            ✉️ <strong>Layanan Gmail Resmi:</strong> support@paidi.ai / usmancipanky@gmail.com<br>
+            📱 <strong>Media Sosial:</strong> TikTok & Instagram (@Paidi.ai.idn)
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -140,5 +171,12 @@ elif menu == "Akun & Profil":
     st.markdown("# 👤 Akun & Profil")
     st.write("Informasi lengkap akun akan muncul di sini.")
 
-# 6. Footer
-st.markdown("<br><hr><div style='text-align:center; font-size:0.8em; opacity:0.6;'>© 2026 PT Paidi.ai Group. Engineered in Malang, Indonesia.</div>", unsafe_allow_html=True)
+# 6. Footer Korporat Lengkap
+st.markdown("<br><hr>", unsafe_allow_html=True)
+st.markdown("""
+<div style='text-align: center; color: #888; font-size: 12px; line-height: 1.6;'>
+    <strong>Paidi.ai</strong> — Infrastruktur perangkat lunak rintisan berbasis kecerdasan buatan untuk otomatisasi repurposing video di Indonesia.<br>
+    🏢 Ruko WOW Sawojajar, Kec. Kedungkandang, Kota Malang, Jawa Timur 65139 | 📞 083853413171 | ✉️ support@paidi.ai<br>
+    © 2026 PT Paidi.ai Group. Didirikan 2026 oleh Usman Shidiq. Hak Cipta Dilindungi Undang-Undang. Engineered with excellence in Malang, Indonesia.
+</div>
+""", unsafe_allow_html=True)
