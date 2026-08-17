@@ -20,19 +20,23 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Cek parameter query string manual untuk navigasi bawah tanpa merusak halaman
-query_params = st.query_params
-if "menu" in query_params:
-    st.session_state.active_menu = query_params["menu"]
-
-# Inisialisasi Session State
+# 2. Inisialisasi Session State
 if "active_menu" not in st.session_state:
     st.session_state.active_menu = "Beranda"
 
 if "active_tab" not in st.session_state:
     st.session_state.active_tab = "Buat Klip"
 
-# 2. CSS Kustom untuk Mengunci Navigasi Bawah Secara Mutlak (Fixed Bottom Navbar)
+# Tangkap parameter query string manual untuk navigasi bawah agar sinkron
+if "menu" in st.query_params:
+    val_menu = st.query_params["menu"]
+    # Handle jika query param berupa string atau list
+    if isinstance(val_menu, list):
+        st.session_state.active_menu = val_menu[0]
+    else:
+        st.session_state.active_menu = val_menu
+
+# 3. CSS Kustom untuk Mengunci Navigasi Bawah Secara Mutlak (Fixed Bottom Navbar)
 st.markdown(f"""
     <style>
     [data-testid="stHeader"] {{ display: none !important; }}
@@ -41,7 +45,7 @@ st.markdown(f"""
     .block-container {{ 
         padding-top: 0rem !important; 
         margin-top: -20px !important;
-        padding-bottom: 120px !important; /* Ruang aman agar konten paling bawah tidak tertutup nav bar */
+        padding-bottom: 120px !important; 
     }}
     
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
@@ -110,7 +114,7 @@ st.markdown(f"""
     </style>
     """, unsafe_allow_html=True)
 
-# 3. Header Utama (Logo 550px ditarik ke atas)
+# 4. Header Utama (Logo ditarik ke atas)
 st.markdown(f"""
     <div style="text-align: center; margin-top: -65px; margin-bottom: 10px;">
         <div style="margin-bottom: -15px;">
@@ -125,10 +129,10 @@ st.markdown(f"""
     </div>
 """, unsafe_allow_html=True)
 
-# 4. Konten Berdasarkan Menu Utama
+# 5. Konten Berdasarkan Menu Utama
 if st.session_state.active_menu == "Beranda":
     
-    # Pill Tabs Sejajar Menyamping di Atas Konten
+    # Pill Tabs Sejajar Menyamping di Atas Konten (Dilengkapi st.rerun agar langsung merespons)
     col_t1, col_t2, col_t3 = st.columns(3)
     with col_t1:
         if st.button("✨ Buat Klip", key="btn_buat_klip"):
@@ -266,7 +270,7 @@ elif st.session_state.active_menu == "Bantuan":
     </div>
     """, unsafe_allow_html=True)
 
-# 5. Render Navigasi Bawah Menggunakan HTML Murni agar Benar-Benar Mengambang & Fixed
+# 6. Render Navigasi Bawah Menggunakan HTML Murni agar Benar-Benar Mengambang & Fixed
 active_beranda = "active" if st.session_state.active_menu == "Beranda" else ""
 active_pembayaran = "active" if st.session_state.active_menu == "Pembayaran" else ""
 active_affiliate = "active" if st.session_state.active_menu == "Affiliate" else ""
