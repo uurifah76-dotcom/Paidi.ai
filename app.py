@@ -137,11 +137,11 @@ if st.session_state.active_menu == "Beranda":
                 </div>
             """, unsafe_allow_html=True)
 
-        # Form Input Link YouTube (Bersih dari menu konfigurasi)
+        # Form Input Link YouTube
         st.markdown("<p style='color: #9ca3af; font-size: 0.85rem; margin-bottom: 5px;'>Tempel Tautan YouTube Anda</p>", unsafe_allow_html=True)
         link = st.text_input("Link YouTube", placeholder="https://youtube.com/watch?v=...", label_visibility="collapsed")
         
-        # Ringkasan konfigurasi aktif saat ini (opsional untuk informasi user)
+        # Ringkasan konfigurasi aktif saat ini
         st.markdown(f"""
             <div style="font-size: 0.75rem; color: #9ca3af; margin: 10px 0 15px 0;">
                 🛠️ Mode Aktif: <span style="color: #38bdf8;">{st.session_state.cfg_durasi}</span> | <span style="color: #38bdf8;">{st.session_state.cfg_rasio}</span>
@@ -153,11 +153,35 @@ if st.session_state.active_menu == "Beranda":
                 st.warning("Kredit Anda habis! Silakan lakukan top up.")
             elif link:
                 with st.spinner("Paidi.ai sedang memproses video..."):
-                    # Di sini Anda bisa menggunakan variabel: 
-                    # st.session_state.cfg_durasi, st.session_state.cfg_rasio, st.session_state.cfg_resolusi
                     st.success("Klip berhasil dibuat berdasarkan pengaturan Anda!")
             else:
                 st.warning("Silakan masukkan tautan YouTube terlebih dahulu.")
+
+        # ==========================================
+        # BAGIAN INFORMASI PERUSAHAAN & FOUNDER
+        # ==========================================
+        st.markdown("<br><hr style='border: 0; border-top: 1px solid #1f2937; margin: 25px 0;'>", unsafe_allow_html=True)
+        
+        st.markdown("""
+            <div class="card-box" style="text-align: left;">
+                <h4 style="color: #ffffff; font-size: 1rem; margin-top: 0; margin-bottom: 8px;">🏛️ Informasi Legalitas Perusahaan</h4>
+                <p style="color: #9ca3af; font-size: 0.8rem; line-height: 1.6; margin-bottom: 0;">
+                    <b>PT Paidi Inovasi Teknologi Indonesia</b><br>
+                    Terdaftar resmi dan dilindungi hukum Republik Indonesia.<br>
+                    NIB: 9123000xxxxx | Kantor Pusat: Jakarta, Indonesia.
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("""
+            <div class="card-box" style="text-align: left;">
+                <h4 style="color: #ffffff; font-size: 1rem; margin-top: 0; margin-bottom: 8px;">👑 Pimpinan & Pendiri</h4>
+                <p style="color: #9ca3af; font-size: 0.8rem; line-height: 1.6; margin-bottom: 0;">
+                    <b>Founder & CEO:</b> Paidi S.Kom., M.T.<br>
+                    Berdedikasi menghadirkan solusi teknologi kecerdasan buatan (AI) terdepan bagi seluruh kreator konten di Indonesia.
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
 
     elif st.session_state.active_tab == "Klip Saya":
         st.markdown("""
