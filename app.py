@@ -21,7 +21,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. CSS Kustom untuk tampilan elegan
+# 2. CSS Kustom
 st.markdown(f"""
     <style>
     [data-testid="stHeader"] {{ display: none !important; }}
@@ -50,16 +50,16 @@ menu = st.sidebar.radio("", ["Beranda & Studio", "Kredit & Paket", "Program Affi
 
 # 4. Halaman Beranda
 if menu == "Beranda & Studio":
-    # Header High-Impact
+    # Header High-Impact (Logo P diperbesar 200px)
     st.markdown(f"""
-        <div style="text-align: center; margin-top: 10px; margin-bottom: 40px;">
-            <div style="margin-bottom: 15px;">
-                <img src="data:image/png;base64,{logo_base64}" style="width: 140px; height: auto; filter: drop-shadow(0px 0px 15px rgba(0, 168, 255, 0.3));">
+        <div style="text-align: center; margin-top: 20px; margin-bottom: 50px;">
+            <div style="margin-bottom: 25px;">
+                <img src="data:image/png;base64,{logo_base64}" style="width: 200px; height: auto; filter: drop-shadow(0px 0px 25px rgba(0, 168, 255, 0.4));">
             </div>
-            <div style="font-size: 3.5rem; font-weight: 900; color: #ffffff; letter-spacing: -2px; line-height: 1;">
+            <div style="font-size: 3.8rem; font-weight: 900; color: #ffffff; letter-spacing: -2px; line-height: 1;">
                 Paidi.ai
             </div>
-            <div style="font-size: 1.3rem; font-weight: 500; color: #00a8ff; margin-top: 10px; letter-spacing: 4px; text-transform: uppercase; border-top: 1px solid #00a8ff; display: inline-block; padding-top: 10px;">
+            <div style="font-size: 1.4rem; font-weight: 400; color: #00a8ff; margin-top: 15px; letter-spacing: 6px; text-transform: uppercase; background: rgba(0, 168, 255, 0.1); display: inline-block; padding: 8px 25px; border-radius: 50px;">
                 Video Studio
             </div>
         </div>
