@@ -20,7 +20,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 2. CSS Kustom - Memaksa tombol tab sejajar horizontal & berbentuk pill ala aplikasi mobile
+# 2. CSS Kustom untuk Sticky Bottom Navigation & Layout Mobile
 st.markdown(f"""
     <style>
     [data-testid="stHeader"] {{ display: none !important; }}
@@ -29,7 +29,7 @@ st.markdown(f"""
     .block-container {{ 
         padding-top: 0rem !important; 
         margin-top: -20px !important;
-        padding-bottom: 90px !important;
+        padding-bottom: 100px !important; /* Ruang agar konten terbawah tidak tertutup nav bar */
     }}
     
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
@@ -44,11 +44,11 @@ st.markdown(f"""
     .profile-img-container {{ width: 110px; height: 140px; border-radius: 10px; overflow: hidden; margin: 0 auto 15px auto; border: 2px solid #00a8ff; box-shadow: 0 4px 15px rgba(0, 168, 255, 0.25); }}
     .profile-img-container img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
 
-    /* Styling tombol utama & pill tabs */
+    /* Styling tombol tab atas */
     .stButton>button {{ width: 100%; border-radius: 50px; height: 3.2em; background-color: rgba(255, 255, 255, 0.04); color: #ffffff; font-weight: 600; font-size: 14px; border: 1px solid rgba(255, 255, 255, 0.1); }}
     .stButton>button:hover {{ background-color: rgba(0, 168, 255, 0.2); border-color: #00a8ff; color: #00a8ff; }}
 
-    /* PAKSA KOLOM TAB AGAR TETAP SEJAJAR MENYAMPING DI HP (TIDAK BERTUMPUK) */
+    /* Paksa kolom tab atas sejajar menyamping */
     div[data-testid="stHorizontalBlock"] {{
         display: flex !important;
         flex-direction: row !important;
@@ -58,6 +58,22 @@ st.markdown(f"""
     div[data-testid="stHorizontalBlock"] > div {{
         flex: 1 !important;
         min-width: 0 !important;
+    }}
+
+    /* STICKY BOTTOM NAVIGATION BAR PERSIS REFERENSI */
+    .fixed-bottom-nav {{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: rgba(13, 22, 34, 0.95);
+        backdrop-filter: blur(12px);
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 10px 0 15px 0;
+        z-index: 999999;
+        display: flex;
+        justify-content: space-around;
+        box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
     }}
     </style>
     """, unsafe_allow_html=True)
@@ -87,7 +103,7 @@ st.markdown(f"""
 # 4. Konten Berdasarkan Menu Utama
 if st.session_state.active_menu == "Beranda":
     
-    # Pill Tabs Sejajar Menyamping di HP
+    # Pill Tabs Sejajar Menyamping di Atas Konten
     col_t1, col_t2, col_t3 = st.columns(3)
     with col_t1:
         if st.button("✨ Buat Klip", key="btn_buat_klip"):
@@ -225,8 +241,8 @@ elif st.session_state.active_menu == "Bantuan":
     </div>
     """, unsafe_allow_html=True)
 
-# 5. Bottom Navigation Bar (Menu Bawah)
-st.markdown("<div style='height: 50px;'></div>", unsafe_allow_html=True)
+# 5. Render Sticky Bottom Navigation Bar (Menempel di bawah & tidak tertutup saat digeser)
+st.markdown('<div class="fixed-bottom-nav">', unsafe_allow_html=True)
 b_col1, b_col2, b_col3, b_col4 = st.columns(4)
 
 with b_col1:
@@ -245,3 +261,5 @@ with b_col4:
     if st.button("❓ Bantuan", key="bottom_bantuan"):
         st.session_state.active_menu = "Bantuan"
         st.rerun()
+
+st.markdown('</div>', unsafe_allow_html=True)
