@@ -20,7 +20,19 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 2. CSS Kustom untuk Sticky Bottom Navigation yang Kuat & Rapi
+# Cek parameter query string manual untuk navigasi bawah tanpa merusak halaman
+query_params = st.query_params
+if "menu" in query_params:
+    st.session_state.active_menu = query_params["menu"]
+
+# Inisialisasi Session State
+if "active_menu" not in st.session_state:
+    st.session_state.active_menu = "Beranda"
+
+if "active_tab" not in st.session_state:
+    st.session_state.active_tab = "Buat Klip"
+
+# 2. CSS Kustom untuk Mengunci Navigasi Bawah Secara Mutlak (Fixed Bottom Navbar)
 st.markdown(f"""
     <style>
     [data-testid="stHeader"] {{ display: none !important; }}
@@ -29,7 +41,7 @@ st.markdown(f"""
     .block-container {{ 
         padding-top: 0rem !important; 
         margin-top: -20px !important;
-        padding-bottom: 110px !important; /* Ruang kosong bawah agar konten tidak tertutup nav bar */
+        padding-bottom: 120px !important; /* Ruang aman agar konten paling bawah tidak tertutup nav bar */
     }}
     
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
@@ -60,32 +72,43 @@ st.markdown(f"""
         min-width: 0 !important;
     }}
 
-    /* MENGUNCI POSISI BOTTOM NAVIGATION BAR AGAR TIDAK IKUT TER-SCROLL */
-    .st-key-bottom_beranda, .st-key-bottom_pembayaran, .st-key-bottom_affiliate, .st-key-bottom_bantuan {{
-        width: 100% !important;
-    }}
-    
-    .floating-nav-container {{
+    /* KONTROL UTAMA BOTTOM NAVBAR AGAR FIXED DAN TIDAK BISA TERTUTUP SCROLL */
+    .custom-bottom-nav {{
         position: fixed !important;
         bottom: 0 !important;
         left: 0 !important;
         width: 100% !important;
-        background: rgba(10, 17, 26, 0.95) !important;
-        backdrop-filter: blur(12px) !important;
+        background: rgba(10, 17, 26, 0.98) !important;
+        backdrop-filter: blur(15px) !important;
         border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-        padding: 10px 10px 15px 10px !important;
-        z-index: 999999 !important;
-        box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.6) !important;
+        display: flex !important;
+        justify-content: space-around !important;
+        align-items: center !important;
+        padding: 10px 5px 15px 5px !important;
+        z-index: 9999999 !important;
+        box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.8) !important;
+    }}
+    
+    .nav-item {{
+        text-align: center;
+        color: #a0a0a0;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 600;
+        flex: 1;
+        transition: 0.2s;
+    }}
+    
+    .nav-item.active {{
+        color: #00a8ff;
+    }}
+    
+    .nav-item div:first-child {{
+        font-size: 20px;
+        margin-bottom: 2px;
     }}
     </style>
     """, unsafe_allow_html=True)
-
-# Inisialisasi Session State
-if "active_menu" not in st.session_state:
-    st.session_state.active_menu = "Beranda"
-
-if "active_tab" not in st.session_state:
-    st.session_state.active_tab = "Buat Klip"
 
 # 3. Header Utama (Logo 550px ditarik ke atas)
 st.markdown(f"""
@@ -243,25 +266,29 @@ elif st.session_state.active_menu == "Bantuan":
     </div>
     """, unsafe_allow_html=True)
 
-# 5. Render Floating Bottom Navigation Bar (Terkunci permanen di bawah layar)
-st.markdown('<div class="floating-nav-container">', unsafe_allow_html=True)
-b_col1, b_col2, b_col3, b_col4 = st.columns(4)
+# 5. Render Navigasi Bawah Menggunakan HTML Murni agar Benar-Benar Mengambang & Fixed
+active_beranda = "active" if st.session_state.active_menu == "Beranda" else ""
+active_pembayaran = "active" if st.session_state.active_menu == "Pembayaran" else ""
+active_affiliate = "active" if st.session_state.active_menu == "Affiliate" else ""
+active_bantuan = "active" if st.session_state.active_menu == "Bantuan" else ""
 
-with b_col1:
-    if st.button("🏠 Beranda", key="bottom_beranda"):
-        st.session_state.active_menu = "Beranda"
-        st.rerun()
-with b_col2:
-    if st.button("💳 Pembayaran", key="bottom_pembayaran"):
-        st.session_state.active_menu = "Pembayaran"
-        st.rerun()
-with b_col3:
-    if st.button("🤝 Affiliate", key="bottom_affiliate"):
-        st.session_state.active_menu = "Affiliate"
-        st.rerun()
-with b_col4:
-    if st.button("❓ Bantuan", key="bottom_bantuan"):
-        st.session_state.active_menu = "Bantuan"
-        st.rerun()
-
-st.markdown('</div>', unsafe_allow_html=True)
+st.markdown(f"""
+    <div class="custom-bottom-nav">
+        <a href="?menu=Beranda" target="_self" class="nav-item {active_beranda}">
+            <div>🏠</div>
+            <div>Beranda</div>
+        </a>
+        <a href="?menu=Pembayaran" target="_self" class="nav-item {active_pembayaran}">
+            <div>💳</div>
+            <div>Pembayaran</div>
+        </a>
+        <a href="?menu=Affiliate" target="_self" class="nav-item {active_affiliate}">
+            <div>🤝</div>
+            <div>Affiliate</div>
+        </a>
+        <a href="?menu=Bantuan" target="_self" class="nav-item {active_bantuan}">
+            <div>❓</div>
+            <div>Bantuan</div>
+        </a>
+    </div>
+""", unsafe_allow_html=True)
