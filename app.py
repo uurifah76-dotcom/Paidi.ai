@@ -20,16 +20,16 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 2. CSS Kustom untuk Styling ala Dashboard SaaS Modern & Sembunyikan Sidebar Default
+# 2. CSS Kustom untuk styling ala dashboard modern & merapikan tombol tab sejajar menyamping
 st.markdown(f"""
     <style>
     [data-testid="stHeader"] {{ display: none !important; }}
-    [data-testid="stSidebar"] {{ display: none !important; }} /* Sembunyikan sidebar bawaan agar fokus ke UI dashboard utama */
+    [data-testid="stSidebar"] {{ display: none !important; }}
     
     .block-container {{ 
         padding-top: 0rem !important; 
         margin-top: -20px !important;
-        padding-bottom: 80px !important; /* Ruang untuk bottom bar */
+        padding-bottom: 90px !important;
     }}
     
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
@@ -44,24 +44,18 @@ st.markdown(f"""
     .profile-img-container {{ width: 110px; height: 140px; border-radius: 10px; overflow: hidden; margin: 0 auto 15px auto; border: 2px solid #00a8ff; box-shadow: 0 4px 15px rgba(0, 168, 255, 0.25); }}
     .profile-img-container img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
 
+    /* Styling tombol aksi utama */
     .stButton>button {{ width: 100%; border-radius: 10px; height: 3.5em; background-color: #007bff; color: white; font-weight: 600; font-size: 16px; border: none; }}
     .stButton>button:hover {{ background-color: #0056b3; }}
-    
-    /* Styling Pill Tabs ala Referensi */
-    .pill-container {{
-        display: flex;
-        gap: 10px;
-        background: rgba(255, 255, 255, 0.03);
-        padding: 6px;
-        border-radius: 50px;
-        border: 1px solid rgba(255, 255, 255, 0.07);
-        margin-bottom: 20px;
-        justify-content: center;
+
+    /* Paksa tombol di dalam horizontal layout agar tampil berdampingan ala pill tabs referensi */
+    div[data-testid="stHorizontalBlock"] > div {{
+        flex: 1 !important;
     }}
     </style>
     """, unsafe_allow_html=True)
 
-# Inisialisasi session state untuk navigasi menu bawah & tab atas
+# Inisialisasi session state untuk menu bawah dan tab atas
 if "active_menu" not in st.session_state:
     st.session_state.active_menu = "Beranda"
 
@@ -83,28 +77,27 @@ st.markdown(f"""
     </div>
 """, unsafe_allow_html=True)
 
-# 4. Konten Berdasarkan Menu Utama (Bottom Navigation)
+# 4. Konten Berdasarkan Menu Utama
 if st.session_state.active_menu == "Beranda":
     
-    # Pill Tabs di bawah Header (Buat Klip | Klip Saya | Pengaturan)
+    # Tombol Tab Sejajar Menyamping (Pill Tabs persis seperti referensi)
     col_t1, col_t2, col_t3 = st.columns(3)
     with col_t1:
-        if st.button("✨ Buat Klip", key="tab_buat"):
+        if st.button("✨ Buat Klip", key="btn_buat_klip"):
             st.session_state.active_tab = "Buat Klip"
     with col_t2:
-        if st.button("🕒 Klip Saya", key="tab_ klip"):
+        if st.button("🕒 Klip Saya", key="btn_klip_saya"):
             st.session_state.active_tab = "Klip Saya"
     with col_t3:
-        if st.button("⚙️ Pengaturan", key="tab_pengaturan"):
+        if st.button("⚙️ Pengaturan", key="btn_pengaturan"):
             st.session_state.active_tab = "Pengaturan"
 
-    st.markdown("<p style='text-align: center; color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-top: -5px; margin-bottom: 20px;'>Tempel link, pilih mode, lalu AI proses klipnya.</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: rgba(255,255,255,0.6); font-size: 0.95rem; margin-top: 10px; margin-bottom: 20px;'>Tempel link, pilih mode, lalu AI proses klipnya.</p>", unsafe_allow_html=True)
 
-    # Konten dalam Tab
+    # Konten Berdasarkan Tab yang Dipilih
     if st.session_state.active_tab == "Buat Klip":
         st.markdown("""<div class="promo-banner">🚀 PROMO PELUNCURAN BETA: Klaim 5 Sesi Gratis + Diskon 50% untuk Paket Pro hari ini!</div>""", unsafe_allow_html=True)
 
-        st.subheader("🛠️ Studio Pemrosesan")
         link = st.text_input("Tempel Tautan YouTube Anda", placeholder="https://www.youtube.com/watch?v=...")
         
         c1, c2 = st.columns(2)
@@ -122,6 +115,7 @@ if st.session_state.active_menu == "Beranda":
             else:
                 st.warning("Masukkan tautan YouTube terlebih dahulu.")
 
+        st.markdown("<br>", unsafe_allow_html=True)
         st.subheader("👤 Tentang Founder")
         st.markdown(f"""
         <div class="profile-box">
@@ -137,24 +131,26 @@ if st.session_state.active_menu == "Beranda":
         """, unsafe_allow_html=True)
 
     elif st.session_state.active_tab == "Klip Saya":
-        st.subheader("🕒 Riwayat Klip Anda")
         st.markdown("""
-        <div class="card">
-            <p style="color: rgba(255,255,255,0.7);">Belum ada klip yang diproses. Silakan buat klip pertama Anda di tab <strong>Buat Klip</strong>.</p>
+        <div class="card" style="text-align: center; padding: 40px;">
+            <h3>🎬 Kamu udah bikin 3 klip 🎉</h3>
+            <p style="color: rgba(255,255,255,0.7); margin-top: 10px; margin-bottom: 20px;">
+                Kredit kamu habis. Top up untuk bikin 30 klip lagi mulai Rp 19.000, langsung jadi dan bisa kamu posting hari ini.
+            </p>
         </div>
         """, unsafe_allow_html=True)
 
     elif st.session_state.active_tab == "Pengaturan":
-        st.subheader("⚙️ Pengaturan Studio")
         st.markdown("""
         <div class="card">
-            <p><strong>Preferensi Akun:</strong> Kelola profil dan kunci API Anda di sini.</p>
+            <h3>⚙️ Pengaturan Akun Studio</h3>
+            <p style="color: rgba(255,255,255,0.7);">Kelola konfigurasi API, profil, dan preferensi aplikasi Anda di sini.</p>
         </div>
         """, unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
     
-    # Bagian Legalitas & Keamanan Platform
+    # Legalitas & Keamanan Platform
     st.markdown("### 📜 Legalitas & Keamanan Platform")
     st.markdown("""
     <div class="card" style="border-left: 4px solid #00a8ff;">
@@ -172,7 +168,7 @@ if st.session_state.active_menu == "Beranda":
 
     st.markdown("<br>", unsafe_allow_html=True)
     
-    # Informasi Korporat & Kontak Resmi di Footer
+    # Informasi Korporat & Kontak Resmi
     st.markdown("### 🏢 Informasi Korporat & Kontak Resmi")
     st.markdown("""
     <div class="card" style="border-left: 4px solid #007bff; background: rgba(0, 0, 0, 0.2);">
@@ -221,7 +217,7 @@ elif st.session_state.active_menu == "Bantuan":
     </div>
     """, unsafe_allow_html=True)
 
-# 5. Bottom Navigation Bar ala Aplikasi Mobile (Fixed di bawah layar)
+# 5. Bottom Navigation Bar (Menu Bawah)
 st.markdown("""
     <style>
     .bottom-nav {
@@ -232,44 +228,27 @@ st.markdown("""
         background: rgba(10, 20, 31, 0.95);
         backdrop-filter: blur(10px);
         border-top: 1px solid rgba(255, 255, 255, 0.1);
-        display: flex;
-        justify-content: space-around;
-        padding: 10px 0;
         z-index: 99999;
-    }
-    .nav-item {
-        color: #a0a0a0;
-        text-align: center;
-        font-size: 12px;
-        text-decoration: none;
-        background: none;
-        border: none;
-        cursor: pointer;
-        flex: 1;
-    }
-    .nav-item:hover {
-        color: #00a8ff;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# Render tombol navigasi bawah menggunakan kolom Streamlit di dalam container fixed
 st.markdown("<div style='height: 50px;'></div>", unsafe_allow_html=True)
-nav_col1, nav_col2, nav_col3, nav_col4 = st.columns(4)
+b_col1, b_col2, b_col3, b_col4 = st.columns(4)
 
-with nav_col1:
-    if st.button("🏠 Beranda", key="nav_beranda"):
+with b_col1:
+    if st.button("🏠 Beranda", key="bottom_beranda"):
         st.session_state.active_menu = "Beranda"
         st.rerun()
-with nav_col2:
-    if st.button("💳 Pembayaran", key="nav_pembayaran"):
+with b_col2:
+    if st.button("💳 Pembayaran", key="bottom_pembayaran"):
         st.session_state.active_menu = "Pembayaran"
         st.rerun()
-with nav_col3:
-    if st.button("🤝 Affiliate", key="nav_affiliate"):
+with b_col3:
+    if st.button("🤝 Affiliate", key="bottom_affiliate"):
         st.session_state.active_menu = "Affiliate"
         st.rerun()
-with nav_col4:
-    if st.button("❓ Bantuan", key="nav_bantuan"):
+with b_col4:
+    if st.button("❓ Bantuan", key="bottom_bantuan"):
         st.session_state.active_menu = "Bantuan"
         st.rerun()
