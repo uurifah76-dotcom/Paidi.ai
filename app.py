@@ -98,14 +98,14 @@ menu = st.sidebar.radio("", ["Beranda & Studio", "Kredit & Paket", "Program Affi
 
 # 4. Halaman Beranda & Studio
 if menu == "Beranda & Studio":
-    # Header: Menggunakan inline-flex agar logo P persis di sebelah kiri teks Aidi.ai (menggantikan huruf A pertama atau menyatu di atas teks secara berdampingan dengan jarak negatif)
+    # Header: Logo P dibuat jauh lebih besar dari tulisan (tinggi 110px) dan diletakkan berdampingan sangat rapat di sebelah kiri teks Aidi.ai
     st.markdown(f"""
         <div style="text-align: center; margin-top: -10px; margin-bottom: 15px;">
-            <div style="display: inline-flex; align-items: flex-end; justify-content: center;">
-                <img src="data:image/png;base64,{logo_base64}" style="width: 120px; height: auto; margin-right: -25px; margin-bottom: -5px; position: relative; z-index: 2;">
-                <span style="font-size: 3rem; font-weight: 800; color: #ffffff; letter-spacing: -1px; line-height: 1; position: relative; z-index: 1;">Aidi.ai</span>
+            <div style="display: inline-flex; align-items: center; justify-content: center;">
+                <img src="data:image/png;base64,{logo_base64}" style="height: 110px; width: auto; margin-right: -15px; position: relative; z-index: 2;">
+                <span style="font-size: 2.8rem; font-weight: 800; color: #ffffff; letter-spacing: -1px; line-height: 1; position: relative; z-index: 1;">Aidi.ai</span>
             </div>
-            <div style="font-size: 2.5rem; font-weight: 800; color: #ffffff; margin-top: 2px; margin-bottom: 8px; letter-spacing: -1px; line-height: 1.1;">
+            <div style="font-size: 2.5rem; font-weight: 800; color: #ffffff; margin-top: 5px; margin-bottom: 8px; letter-spacing: -1px; line-height: 1.1;">
                 Video Studio
             </div>
             <p style='color:#00a8ff; font-weight:700; font-size: 1.1rem; margin-top:0px; margin-bottom: 25px;'>
