@@ -19,9 +19,12 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. CSS Kustom Profesional
+# 2. CSS Kustom (Termasuk penghapusan teks navigasi otomatis)
 st.markdown(f"""
     <style>
+    /* Hapus paksa teks navigasi otomatis */
+    [data-testid="stHeader"] {{ display: none !important; }}
+    
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
     
     html, body, [class*="st-"] {{
@@ -57,7 +60,7 @@ st.markdown(f"""
         border: 1px solid rgba(0, 123, 255, 0.2);
     }}
     
-    /* Kotak foto profil diperkecil dan dikunci tepat di tengah */
+    /* Foto profil diperkecil, kotak, dan tengah */
     .profile-img-container {{
         width: 110px;
         height: 140px;
@@ -95,13 +98,13 @@ menu = st.sidebar.radio("", ["Beranda & Studio", "Kredit & Paket", "Program Affi
 
 # 4. Halaman Beranda & Studio
 if menu == "Beranda & Studio":
-    # Header Utama (Logo 'P' diperbesar sedikit & disejajarkan rapi tanpa teks sampah di atas)
-    col1, col2 = st.columns([1, 4], vertical_alignment="center")
+    # Header: Logo diperbesar & teks dihilangkan
+    col1, col2 = st.columns([1.5, 4], vertical_alignment="center")
     with col1: 
-        st.image("47836-removebg-preview.png", width=130)
+        st.image("47836-removebg-preview.png", width=150)
     with col2: 
         st.markdown("<h1 style='margin:0; font-size: 2.1rem; line-height: 1.2;'>Paidi.ai Video Studio</h1>", unsafe_allow_html=True)
-        st.markdown("<p style='color:#00a8ff; font-weight:600; margin-top:5px;'>Ekstraksi Konten Sinematik: Dari Video Panjang ke Reels Viral</p>", unsafe_allow_html=True)
+        st.markdown("<p style='color:#00a8ff; font-weight:600; margin-top:5px;'>Ekstraksi Konten Sinematik</p>", unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
     
@@ -129,7 +132,6 @@ if menu == "Beranda & Studio":
         else:
             st.warning("Masukkan tautan YouTube terlebih dahulu.")
 
-    # Profil Founder
     st.subheader("👤 Tentang Founder")
     st.markdown(f"""
     <div class="profile-box">
