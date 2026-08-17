@@ -46,20 +46,16 @@ st.markdown("""
         border: 1px solid rgba(0, 123, 255, 0.2);
     }
     
-    /* Pengaturan khusus untuk foto profil agar bulat sempurna dan pas */
-    .profile-img-container {
+    /* Bingkai Lingkaran Sempurna dan Terkunci Mutlak */
+    .profile-circle {
         width: 130px;
         height: 130px;
         border-radius: 50%;
-        overflow: hidden;
-        margin: 0 auto;
+        object-fit: cover;
         border: 3px solid #00a8ff;
         box-shadow: 0 8px 25px rgba(0, 168, 255, 0.3);
-    }
-    .profile-img-container img {
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: cover !important;
+        display: block;
+        margin: 0 auto;
     }
 
     .stButton>button {
@@ -127,17 +123,11 @@ if menu == "Beranda & Studio":
     with c_f2:
         st.markdown("<div class='card'><h4>2. Deep Scanning</h4><p style='font-size:0.9em; opacity:0.8;'>AI menyeleksi momen terbaik untuk engagement maksimal.</p></div>", unsafe_allow_html=True)
 
-    # Profil Founder (Menggunakan Streamlit Native Image di dalam Wadah Bulat)
+    # Profil Founder (Menggunakan Tag HTML murni agar bulat sempurna dan tidak meluber)
     st.subheader("👤 Tentang Founder")
-    st.markdown('<div class="profile-box">', unsafe_allow_html=True)
-    
-    _, col_img, _ = st.columns([1, 1.2, 1])
-    with col_img:
-        st.markdown('<div class="profile-img-container">', unsafe_allow_html=True)
-        st.image("IMG-20260521-WA0022.jpg", use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-        
     st.markdown("""
+    <div class="profile-box">
+        <img src="IMG-20260521-WA0022.jpg" class="profile-circle">
         <h3 style="margin-top:20px; margin-bottom:5px;">Usman Shidiq</h3>
         <p style="color:#00a8ff; font-weight:600; margin-bottom:15px;">Founder & CEO of Paidi.ai</p>
         <p style="font-size:0.95em; line-height:1.6; opacity:0.9; max-width: 500px; margin: 0 auto;">
