@@ -1,6 +1,6 @@
 import streamlit as st
 
-# 1. Konfigurasi Halaman (Judul & Favicon)
+# 1. Konfigurasi Halaman
 st.set_page_config(
     page_title="Paidi.ai | AI Video Studio",
     page_icon="47836-removebg-preview.png",
@@ -8,7 +8,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. CSS Kustom untuk Lingkaran Sempurna & Desain Profesional
+# 2. CSS Kustom Profesional
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
@@ -46,17 +46,14 @@ st.markdown("""
         border: 1px solid rgba(0, 123, 255, 0.2);
     }
     
-    /* MEMAKSA FOTO MENJADI LINGKARAN SEMPURNA DAN TAJAM */
-    img[data-testid="stImage"] {
-        border-radius: 50% !important;
-        object-fit: cover !important;
-    }
-    .profile-avatar img {
-        width: 130px !important;
-        height: 130px !important;
-        border-radius: 50% !important;
-        object-fit: cover !important;
-        border: 3px solid #00a8ff !important;
+    /* Lingkaran Sempurna untuk Foto Profil via HTML murni */
+    .circular-profile {
+        width: 130px;
+        height: 130px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #00a8ff;
+        box-shadow: 0 8px 25px rgba(0, 168, 255, 0.3);
         display: block;
         margin: 0 auto;
     }
@@ -82,13 +79,13 @@ menu = st.sidebar.radio("", ["Beranda & Studio", "Kredit & Paket", "Program Affi
 
 # 4. Halaman Beranda & Studio
 if menu == "Beranda & Studio":
-    # Header Utama dengan Logo 'P' Ukuran Besar di Samping Judul
+    # Header Utama: Logo 'P' Ukuran Besar & Dominan di Samping Judul
     col1, col2 = st.columns([1, 4.5], vertical_alignment="center")
     with col1: 
-        st.image("47836-removebg-preview.png", width=95)
+        st.image("47836-removebg-preview.png", width=110)
     with col2: 
-        st.markdown("<h1 style='margin:0;'>Paidi.ai Video Studio</h1>", unsafe_allow_html=True)
-        st.markdown("<p style='color:#00a8ff; font-weight:600;'>Ekstraksi Konten Sinematik: Dari Video Panjang ke Reels Viral</p>", unsafe_allow_html=True)
+        st.markdown("<h1 style='margin:0; font-size: 2.2rem;'>Paidi.ai Video Studio</h1>", unsafe_allow_html=True)
+        st.markdown("<p style='color:#00a8ff; font-weight:600; margin-top:5px;'>Ekstraksi Konten Sinematik: Dari Video Panjang ke Reels Viral</p>", unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
     
@@ -126,20 +123,14 @@ if menu == "Beranda & Studio":
     with c_f2:
         st.markdown("<div class='card'><h4>2. Deep Scanning</h4><p style='font-size:0.9em; opacity:0.8;'>AI menyeleksi momen terbaik untuk engagement maksimal.</p></div>", unsafe_allow_html=True)
 
-    # Profil Founder (Diikat dengan Kelas Lingkaran Khusus)
+    # Profil Founder (Bingkai Lingkaran Sempurna Ringkas & Elegan)
     st.subheader("👤 Tentang Founder")
-    st.markdown('<div class="profile-box">', unsafe_allow_html=True)
-    
-    _, col_img, _ = st.columns([1, 1.2, 1])
-    with col_img: 
-        st.markdown('<div class="profile-avatar">', unsafe_allow_html=True)
-        st.image("IMG-20260521-WA0022.jpg")
-        st.markdown('</div>', unsafe_allow_html=True)
-        
     st.markdown("""
-        <h3 style="margin-top:20px;">Usman Shidiq</h3>
-        <p style="color:#00a8ff; font-weight:600;">Founder & CEO of Paidi.ai</p>
-        <p style="font-size:0.95em; line-height:1.6; opacity:0.9;">
+    <div class="profile-box">
+        <img src="https://raw.githubusercontent.com/usmanshidiq-ai/paidi-ai-studio/main/IMG-20260521-WA0022.jpg" class="circular-profile" onerror="this.src='47836-removebg-preview.png'">
+        <h3 style="margin-top:20px; margin-bottom:5px;">Usman Shidiq</h3>
+        <p style="color:#00a8ff; font-weight:600; margin-bottom:15px;">Founder & CEO of Paidi.ai</p>
+        <p style="font-size:0.95em; line-height:1.6; opacity:0.9; max-width: 500px; margin: 0 auto;">
             "Misi kami adalah mendemokratisasi teknologi editing video. Paidi.ai hadir untuk membantu kreator Indonesia memangkas waktu produksi tanpa mengorbankan kualitas konten."
         </p>
     </div>
