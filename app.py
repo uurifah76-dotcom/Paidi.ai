@@ -10,6 +10,7 @@ def get_base64_image(image_path):
         return ""
 
 img_base64 = get_base64_image("IMG-20260521-WA0022.jpg")
+logo_base64 = get_base64_image("47836-removebg-preview.png")
 
 # 1. Konfigurasi Halaman
 st.set_page_config(
@@ -97,21 +98,19 @@ menu = st.sidebar.radio("", ["Beranda & Studio", "Kredit & Paket", "Program Affi
 
 # 4. Halaman Beranda & Studio
 if menu == "Beranda & Studio":
-    # Header: Logo diperbesar ke 200px dan judul disesuaikan secara profesional
-    col1, col2 = st.columns([1, 2.5], vertical_alignment="center")
-    with col1: 
-        st.image("47836-removebg-preview.png", width=200)
-    with col2: 
-        st.markdown("""
-            <h1 style='margin:0; font-size: 2.3rem; line-height: 1.1; letter-spacing: -1px;'>
-                Paidi.ai <br>Video Studio
-            </h1>
-            <p style='color:#00a8ff; font-weight:700; font-size: 1rem; margin-top:8px;'>
-                Ekstraksi Konten Sinematik
-            </p>
-        """, unsafe_allow_html=True)
-    
-    st.markdown("<br>", unsafe_allow_html=True)
+    # Header: Menggabungkan Logo P sebagai pengganti huruf P dengan tulisan "aidai.ai Video Studio"
+    st.markdown(f"""
+        <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 5px; flex-wrap: wrap;">
+            <img src="data:image/png;base64,{logo_base64}" style="height: 52px; vertical-align: middle; margin-right: -2px;">
+            <span style="font-size: 2.3rem; font-weight: 800; color: #ffffff; letter-spacing: -1px; line-height: 1;">aidai.ai</span>
+        </div>
+        <div style="font-size: 2.1rem; font-weight: 800; color: #ffffff; margin-bottom: 10px; letter-spacing: -1px; line-height: 1.1;">
+            Video Studio
+        </div>
+        <p style='color:#00a8ff; font-weight:700; font-size: 1rem; margin-top:0px; margin-bottom: 25px;'>
+            Ekstraksi Konten Sinematik
+        </p>
+    """, unsafe_allow_html=True)
     
     st.markdown("""
     <div class="promo-banner">
