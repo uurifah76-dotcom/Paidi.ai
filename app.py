@@ -20,7 +20,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 2. CSS Kustom untuk styling ala dashboard modern & merapikan tombol tab sejajar menyamping
+# 2. CSS Kustom - Memaksa tombol tab sejajar horizontal & berbentuk pill ala aplikasi mobile
 st.markdown(f"""
     <style>
     [data-testid="stHeader"] {{ display: none !important; }}
@@ -44,18 +44,25 @@ st.markdown(f"""
     .profile-img-container {{ width: 110px; height: 140px; border-radius: 10px; overflow: hidden; margin: 0 auto 15px auto; border: 2px solid #00a8ff; box-shadow: 0 4px 15px rgba(0, 168, 255, 0.25); }}
     .profile-img-container img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
 
-    /* Styling tombol aksi utama */
-    .stButton>button {{ width: 100%; border-radius: 10px; height: 3.5em; background-color: #007bff; color: white; font-weight: 600; font-size: 16px; border: none; }}
-    .stButton>button:hover {{ background-color: #0056b3; }}
+    /* Styling tombol utama & pill tabs */
+    .stButton>button {{ width: 100%; border-radius: 50px; height: 3.2em; background-color: rgba(255, 255, 255, 0.04); color: #ffffff; font-weight: 600; font-size: 14px; border: 1px solid rgba(255, 255, 255, 0.1); }}
+    .stButton>button:hover {{ background-color: rgba(0, 168, 255, 0.2); border-color: #00a8ff; color: #00a8ff; }}
 
-    /* Paksa tombol di dalam horizontal layout agar tampil berdampingan ala pill tabs referensi */
+    /* PAKSA KOLOM TAB AGAR TETAP SEJAJAR MENYAMPING DI HP (TIDAK BERTUMPUK) */
+    div[data-testid="stHorizontalBlock"] {{
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: 8px !important;
+    }}
     div[data-testid="stHorizontalBlock"] > div {{
         flex: 1 !important;
+        min-width: 0 !important;
     }}
     </style>
     """, unsafe_allow_html=True)
 
-# Inisialisasi session state untuk menu bawah dan tab atas
+# Inisialisasi Session State
 if "active_menu" not in st.session_state:
     st.session_state.active_menu = "Beranda"
 
@@ -80,21 +87,24 @@ st.markdown(f"""
 # 4. Konten Berdasarkan Menu Utama
 if st.session_state.active_menu == "Beranda":
     
-    # Tombol Tab Sejajar Menyamping (Pill Tabs persis seperti referensi)
+    # Pill Tabs Sejajar Menyamping di HP
     col_t1, col_t2, col_t3 = st.columns(3)
     with col_t1:
         if st.button("✨ Buat Klip", key="btn_buat_klip"):
             st.session_state.active_tab = "Buat Klip"
+            st.rerun()
     with col_t2:
         if st.button("🕒 Klip Saya", key="btn_klip_saya"):
             st.session_state.active_tab = "Klip Saya"
+            st.rerun()
     with col_t3:
         if st.button("⚙️ Pengaturan", key="btn_pengaturan"):
             st.session_state.active_tab = "Pengaturan"
+            st.rerun()
 
-    st.markdown("<p style='text-align: center; color: rgba(255,255,255,0.6); font-size: 0.95rem; margin-top: 10px; margin-bottom: 20px;'>Tempel link, pilih mode, lalu AI proses klipnya.</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-top: 10px; margin-bottom: 20px;'>Tempel link, pilih mode, lalu AI proses klipnya.</p>", unsafe_allow_html=True)
 
-    # Konten Berdasarkan Tab yang Dipilih
+    # Isi Berdasarkan Tab Aktif
     if st.session_state.active_tab == "Buat Klip":
         st.markdown("""<div class="promo-banner">🚀 PROMO PELUNCURAN BETA: Klaim 5 Sesi Gratis + Diskon 50% untuk Paket Pro hari ini!</div>""", unsafe_allow_html=True)
 
@@ -108,7 +118,7 @@ if st.session_state.active_menu == "Beranda":
             st.selectbox("Resolusi", ["720p HD", "1080p Full HD"])
             st.selectbox("Fokus Konten", ["🔥 Multi-Analisis AI", "Fokus Hook Utama"])
         
-        if st.button("✨ Eksekusi Analisis"):
+        if st.button("✨ Eksekusi Analisis", key="exec_analisis"):
             if link:
                 with st.spinner("🚀 AI sedang memproses video..."):
                     st.success("Analisis berhasil! Data telah siap.")
@@ -150,7 +160,6 @@ if st.session_state.active_menu == "Beranda":
 
     st.markdown("<br>", unsafe_allow_html=True)
     
-    # Legalitas & Keamanan Platform
     st.markdown("### 📜 Legalitas & Keamanan Platform")
     st.markdown("""
     <div class="card" style="border-left: 4px solid #00a8ff;">
@@ -168,7 +177,6 @@ if st.session_state.active_menu == "Beranda":
 
     st.markdown("<br>", unsafe_allow_html=True)
     
-    # Informasi Korporat & Kontak Resmi
     st.markdown("### 🏢 Informasi Korporat & Kontak Resmi")
     st.markdown("""
     <div class="card" style="border-left: 4px solid #007bff; background: rgba(0, 0, 0, 0.2);">
@@ -218,21 +226,6 @@ elif st.session_state.active_menu == "Bantuan":
     """, unsafe_allow_html=True)
 
 # 5. Bottom Navigation Bar (Menu Bawah)
-st.markdown("""
-    <style>
-    .bottom-nav {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background: rgba(10, 20, 31, 0.95);
-        backdrop-filter: blur(10px);
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        z-index: 99999;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
 st.markdown("<div style='height: 50px;'></div>", unsafe_allow_html=True)
 b_col1, b_col2, b_col3, b_col4 = st.columns(4)
 
