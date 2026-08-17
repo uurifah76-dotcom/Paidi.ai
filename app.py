@@ -97,15 +97,19 @@ menu = st.sidebar.radio("", ["Beranda & Studio", "Kredit & Paket", "Program Affi
 
 # 4. Halaman Beranda & Studio
 if menu == "Beranda & Studio":
-    # Header: Logo disesuaikan posisinya
-    col1, col2 = st.columns([1.2, 3.8], vertical_alignment="center")
+    # Header: Logo diperbesar ke 200px dan judul disesuaikan secara profesional
+    col1, col2 = st.columns([1, 2.5], vertical_alignment="center")
     with col1: 
-        st.markdown("<div style='margin-top: 15px;'>", unsafe_allow_html=True)
-        st.image("47836-removebg-preview.png", width=140)
-        st.markdown("</div>", unsafe_allow_html=True)
+        st.image("47836-removebg-preview.png", width=200)
     with col2: 
-        st.markdown("<h1 style='margin:0; font-size: 2.1rem; line-height: 1.2; padding-top: 15px;'>Paidi.ai Video Studio</h1>", unsafe_allow_html=True)
-        st.markdown("<p style='color:#00a8ff; font-weight:600; margin-top:5px;'>Ekstraksi Konten Sinematik</p>", unsafe_allow_html=True)
+        st.markdown("""
+            <h1 style='margin:0; font-size: 2.3rem; line-height: 1.1; letter-spacing: -1px;'>
+                Paidi.ai <br>Video Studio
+            </h1>
+            <p style='color:#00a8ff; font-weight:700; font-size: 1rem; margin-top:8px;'>
+                Ekstraksi Konten Sinematik
+            </p>
+        """, unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
     
