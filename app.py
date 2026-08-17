@@ -20,7 +20,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. CSS Kustom - Menghilangkan padding atas secara total agar tidak ada ruang kosong
+# 2. CSS Kustom - Menghilangkan padding atas agar tidak ada ruang kosong berlebih
 st.markdown(f"""
     <style>
     [data-testid="stHeader"] {{ display: none !important; }}
@@ -53,9 +53,9 @@ menu = st.sidebar.radio("", ["Beranda & Studio", "Kredit & Paket", "Program Affi
 
 # 4. Halaman Beranda & Studio
 if menu == "Beranda & Studio":
-    # Header ditarik ke atas dengan margin negatif yang lebih kuat dan logo 550px
+    # Header dengan Logo 550px dan ditarik rapat ke atas
     st.markdown(f"""
-        <div style="text-align: center; margin-top: -60px; margin-bottom: 10px;">
+        <div style="text-align: center; margin-top: -65px; margin-bottom: 10px;">
             <div style="margin-bottom: -15px;">
                 <img src="data:image/png;base64,{logo_base64}" style="width: 550px; height: auto; filter: drop-shadow(0px 0px 35px rgba(0, 168, 255, 0.35));">
             </div>
@@ -103,9 +103,29 @@ if menu == "Beranda & Studio":
     """, unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Bagian Informasi Legalitas & Kepatuhan Platform (Mengisi celah agar tampak profesional)
+    st.markdown("### 📜 Legalitas & Keamanan Platform")
+    st.markdown("""
+    <div class="card" style="border-left: 4px solid #00a8ff;">
+        <p style="font-size: 14px; line-height: 1.6; margin-bottom: 12px;">
+            <strong>Paidi.ai</strong> beroperasi dengan menjunjung tinggi standar legalitas dan pelindungan data pengguna di Indonesia. Seluruh pemrosesan kecerdasan buatan mematuhi regulasi privasi yang berlaku.
+        </p>
+        <hr style="border-color: rgba(255,255,255,0.1); margin: 14px 0;">
+        <p style="font-size: 13px; margin: 0; opacity: 0.9; line-height: 1.6;">
+            🛡️ <strong>Kepatuhan Data:</strong> Perlindungan Data Pribadi (UU PDP)<br>
+            📄 <strong>Ketentuan Layanan:</strong> Hak Cipta Konten & Kebijakan Penggunaan Wajar (Fair Use AI)<br>
+            🔒 <strong>Keamanan:</strong> Enskripsi End-to-End untuk setiap berkas media yang diproses
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Informasi Korporat & Kontak Resmi ditarik ke paling bawah (Footer)
     st.markdown("### 🏢 Informasi Korporat & Kontak Resmi")
     st.markdown("""
-    <div class="card" style="border-left: 4px solid #007bff;">
+    <div class="card" style="border-left: 4px solid #007bff; background: rgba(0, 0, 0, 0.2);">
         <p style="font-size: 14px; line-height: 1.6; margin-bottom: 12px;">
             <strong>PT Paidi.ai Group</strong> didirikan pada tahun <strong>2026</strong> di Kota Malang, Jawa Timur oleh <strong>Usman Shidiq</strong>. Kami berkomitmen membangun fondasi perangkat lunak rintisan berbasis kecerdasan buatan untuk revolusi konten digital Indonesia.
         </p>
@@ -116,6 +136,9 @@ if menu == "Beranda & Studio":
             ✉️ <strong>Layanan Gmail Resmi:</strong> support@paidi.ai / usmancipanky@gmail.com<br>
             📱 <strong>Media Sosial:</strong> TikTok & Instagram (@Paidi.ai.idn)
         </p>
+        <div style="text-align: center; margin-top: 20px; font-size: 12px; opacity: 0.6;">
+            © 2026 PT Paidi.ai Group. Hak Cipta Dilindungi Undang-Undang.
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
