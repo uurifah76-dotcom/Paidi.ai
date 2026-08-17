@@ -19,7 +19,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. CSS Kustom (Termasuk penghapusan teks navigasi otomatis)
+# 2. CSS Kustom
 st.markdown(f"""
     <style>
     /* Hapus paksa teks navigasi otomatis */
@@ -60,7 +60,6 @@ st.markdown(f"""
         border: 1px solid rgba(0, 123, 255, 0.2);
     }}
     
-    /* Foto profil diperkecil, kotak, dan tengah */
     .profile-img-container {{
         width: 110px;
         height: 140px;
@@ -91,19 +90,21 @@ st.markdown(f"""
     </style>
     """, unsafe_allow_html=True)
 
-# 3. Sidebar Navigasi
+# 3. Sidebar
 st.sidebar.image("47836-removebg-preview.png", width=80)
 st.sidebar.markdown("### Navigasi Sistem")
 menu = st.sidebar.radio("", ["Beranda & Studio", "Kredit & Paket", "Program Affiliate", "Akun & Profil"])
 
 # 4. Halaman Beranda & Studio
 if menu == "Beranda & Studio":
-    # Header: Logo diperbesar & teks dihilangkan
-    col1, col2 = st.columns([1.5, 4], vertical_alignment="center")
+    # Header: Logo disesuaikan posisinya
+    col1, col2 = st.columns([1.2, 3.8], vertical_alignment="center")
     with col1: 
-        st.image("47836-removebg-preview.png", width=150)
+        st.markdown("<div style='margin-top: 15px;'>", unsafe_allow_html=True)
+        st.image("47836-removebg-preview.png", width=140)
+        st.markdown("</div>", unsafe_allow_html=True)
     with col2: 
-        st.markdown("<h1 style='margin:0; font-size: 2.1rem; line-height: 1.2;'>Paidi.ai Video Studio</h1>", unsafe_allow_html=True)
+        st.markdown("<h1 style='margin:0; font-size: 2.1rem; line-height: 1.2; padding-top: 15px;'>Paidi.ai Video Studio</h1>", unsafe_allow_html=True)
         st.markdown("<p style='color:#00a8ff; font-weight:600; margin-top:5px;'>Ekstraksi Konten Sinematik</p>", unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
