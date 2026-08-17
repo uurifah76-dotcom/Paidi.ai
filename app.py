@@ -1,8 +1,9 @@
 import streamlit as st
 
-# Konfigurasi Halaman
+# Konfigurasi Halaman & Logo Tab Browser (Favicon)
 st.set_page_config(
     page_title="Paidi.ai - AI Video Studio",
+    page_icon="47836-removebg-preview.png",
     layout="centered",
     initial_sidebar_state="expanded"
 )
@@ -46,7 +47,8 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# Sidebar Navigasi
+# Sidebar Navigasi dengan Logo Perusahaan
+st.sidebar.image("47836-removebg-preview.png", width=70)
 st.sidebar.markdown("### ⚡ Paidi.ai Menu")
 menu = st.sidebar.radio(
     "Navigasi Utama", 
@@ -62,13 +64,17 @@ st.sidebar.markdown("📍 Malang, Indonesia")
 # 1. Halaman Beranda & Studio
 if menu == "Beranda & Studio":
     
-    st.markdown("""
-        <div style="text-align: center; margin-bottom: 20px;">
-            <h1 style="font-size: 30px; margin-bottom: 8px;">⚡ Paidi.ai Video Studio</h1>
-            <h3 style="color: #4da6ff; margin-top: 0; font-size: 18px;">Ekstraksi Konten Sinematik: Dari Video Panjang Menjadi Reels Daya Tinggi 🔗</h3>
-        </div>
-    """, unsafe_allow_html=True)
+    # Header dengan Logo
+    col_logo, col_title = st.columns([1, 4])
+    with col_logo:
+        st.image("47836-removebg-preview.png", width=85)
+    with col_title:
+        st.markdown("""
+            <h1 style="font-size: 26px; margin-bottom: 0;">⚡ Paidi.ai Video Studio</h1>
+            <p style="color: #4da6ff; margin: 0; font-size: 14px;">Ekstraksi Konten Sinematik: Dari Video Panjang Menjadi Reels Daya Tinggi 🔗</p>
+        """, unsafe_allow_html=True)
     
+    st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("### 🛠️ Studio Pemrosesan Konten")
     
     st.markdown("""
@@ -120,7 +126,7 @@ if menu == "Beranda & Studio":
     # --- PROFIL FOUNDER ---
     st.markdown("""
     <div class="profile-card">
-        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=faces" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 2px solid #007bff; margin-bottom: 12px; display: block; margin-left: auto; margin-right: auto;" alt="Founder">
+        <img src="IMG-20260521-WA0022.jpg" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 2px solid #007bff; margin-bottom: 12px; display: block; margin-left: auto; margin-right: auto;" alt="Founder">
         <h3 style="margin: 0; font-size: 18px; text-align: center;">Usman Shidiq</h3>
         <p style="color: #4da6ff; font-size: 13px; margin-top: 2px; margin-bottom: 12px; text-align: center;">Founder of Paidi.ai</p>
         <p style="font-size: 14px; opacity: 0.9; line-height: 1.6; text-align: center; margin-bottom: 8px;">
