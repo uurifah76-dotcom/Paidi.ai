@@ -1,7 +1,7 @@
 import streamlit as st
 import base64
 
-# Fungsi untuk konversi gambar lokal ke base64 agar aman di semua perangkat
+# Fungsi untuk konversi gambar lokal ke base64
 def get_base64_image(image_path):
     try:
         with open(image_path, "rb") as img_file:
@@ -95,11 +95,12 @@ menu = st.sidebar.radio("", ["Beranda & Studio", "Kredit & Paket", "Program Affi
 
 # 4. Halaman Beranda & Studio
 if menu == "Beranda & Studio":
-    col1, col2 = st.columns([1, 4.5], vertical_alignment="center")
+    # Header Utama (Logo 'P' diperbesar sedikit & disejajarkan rapi tanpa teks sampah di atas)
+    col1, col2 = st.columns([1, 4], vertical_alignment="center")
     with col1: 
-        st.image("47836-removebg-preview.png", width=110)
+        st.image("47836-removebg-preview.png", width=130)
     with col2: 
-        st.markdown("<h1 style='margin:0; font-size: 2.2rem;'>Paidi.ai Video Studio</h1>", unsafe_allow_html=True)
+        st.markdown("<h1 style='margin:0; font-size: 2.1rem; line-height: 1.2;'>Paidi.ai Video Studio</h1>", unsafe_allow_html=True)
         st.markdown("<p style='color:#00a8ff; font-weight:600; margin-top:5px;'>Ekstraksi Konten Sinematik: Dari Video Panjang ke Reels Viral</p>", unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
@@ -128,7 +129,7 @@ if menu == "Beranda & Studio":
         else:
             st.warning("Masukkan tautan YouTube terlebih dahulu.")
 
-    # Profil Founder (Rapi, Ukuran Pas, Center Mutlak Tanpa Kolom Kosong)
+    # Profil Founder
     st.subheader("👤 Tentang Founder")
     st.markdown(f"""
     <div class="profile-box">
