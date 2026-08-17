@@ -30,13 +30,12 @@ if "active_tab" not in st.session_state:
 # Tangkap parameter query string manual untuk navigasi bawah agar sinkron
 if "menu" in st.query_params:
     val_menu = st.query_params["menu"]
-    # Handle jika query param berupa string atau list
     if isinstance(val_menu, list):
         st.session_state.active_menu = val_menu[0]
     else:
         st.session_state.active_menu = val_menu
 
-# 3. CSS Kustom untuk Mengunci Navigasi Bawah Secara Mutlak (Fixed Bottom Navbar)
+# 3. CSS Kustom untuk Mengunci Navigasi Bawah Secara Mutlak & Styling Tombol Tab Aktif
 st.markdown(f"""
     <style>
     [data-testid="stHeader"] {{ display: none !important; }}
@@ -60,8 +59,8 @@ st.markdown(f"""
     .profile-img-container {{ width: 110px; height: 140px; border-radius: 10px; overflow: hidden; margin: 0 auto 15px auto; border: 2px solid #00a8ff; box-shadow: 0 4px 15px rgba(0, 168, 255, 0.25); }}
     .profile-img-container img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
 
-    /* Styling tombol tab atas */
-    .stButton>button {{ width: 100%; border-radius: 50px; height: 3.2em; background-color: rgba(255, 255, 255, 0.04); color: #ffffff; font-weight: 600; font-size: 14px; border: 1px solid rgba(255, 255, 255, 0.1); }}
+    /* Styling tombol tab atas secara umum */
+    .stButton>button {{ width: 100%; border-radius: 50px; height: 3.2em; background-color: rgba(255, 255, 255, 0.04); color: #ffffff; font-weight: 600; font-size: 14px; border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.2s ease; }}
     .stButton>button:hover {{ background-color: rgba(0, 168, 255, 0.2); border-color: #00a8ff; color: #00a8ff; }}
 
     /* Paksa kolom tab atas sejajar menyamping */
@@ -76,7 +75,7 @@ st.markdown(f"""
         min-width: 0 !important;
     }}
 
-    /* KONTROL UTAMA BOTTOM NAVBAR AGAR FIXED DAN TIDAK BISA TERTUTUP SCROLL */
+    /* KONTROL UTAMA BOTTOM NAVBAR AGAR FIXED */
     .custom-bottom-nav {{
         position: fixed !important;
         bottom: 0 !important;
@@ -132,24 +131,27 @@ st.markdown(f"""
 # 5. Konten Berdasarkan Menu Utama
 if st.session_state.active_menu == "Beranda":
     
-    # Pill Tabs Sejajar Menyamping di Atas Konten (Dilengkapi st.rerun agar langsung merespons)
+    # Pill Tabs Atas dengan logika Callback langsung memperbarui state tab
     col_t1, col_t2, col_t3 = st.columns(3)
+    
     with col_t1:
-        if st.button("✨ Buat Klip", key="btn_buat_klip"):
+        if st.button("✨ Buat Klip", key="btn_buat_klip", type="primary" if st.session_state.active_tab == "Buat Klip" else "secondary"):
             st.session_state.active_tab = "Buat Klip"
             st.rerun()
+            
     with col_t2:
-        if st.button("🕒 Klip Saya", key="btn_klip_saya"):
+        if st.button("🕒 Klip Saya", key="btn_klip_saya", type="primary" if st.session_state.active_tab == "Klip Saya" else "secondary"):
             st.session_state.active_tab = "Klip Saya"
             st.rerun()
+            
     with col_t3:
-        if st.button("⚙️ Pengaturan", key="btn_pengaturan"):
+        if st.button("⚙️ Pengaturan", key="btn_pengaturan", type="primary" if st.session_state.active_tab == "Pengaturan" else "secondary"):
             st.session_state.active_tab = "Pengaturan"
             st.rerun()
 
     st.markdown("<p style='text-align: center; color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-top: 10px; margin-bottom: 20px;'>Tempel link, pilih mode, lalu AI proses klipnya.</p>", unsafe_allow_html=True)
 
-    # Isi Berdasarkan Tab Aktif
+    # Isi Berdasarkan Tab Aktif di Beranda
     if st.session_state.active_tab == "Buat Klip":
         st.markdown("""<div class="promo-banner">🚀 PROMO PELUNCURAN BETA: Klaim 5 Sesi Gratis + Diskon 50% untuk Paket Pro hari ini!</div>""", unsafe_allow_html=True)
 
@@ -157,11 +159,11 @@ if st.session_state.active_menu == "Beranda":
         
         c1, c2 = st.columns(2)
         with c1: 
-            st.selectbox("Durasi Klip", ["Pendek (15-30 detik)", "Standar (30-60 detik)"])
-            st.selectbox("Rasio Video", ["9:16 (TikTok/Reels)", "1:1 (Square)", "16:9 (Landscape)"])
+            st.selectbox("Durasi Klip", ["Pendek (15-30 detik)", "Standar (30-60 detik)"], key="sel_durasi")
+            st.selectbox("Rasio Video", ["9:16 (TikTok/Reels)", "1:1 (Square)", "16:9 (Landscape)"], key="sel_rasio")
         with c2:
-            st.selectbox("Resolusi", ["720p HD", "1080p Full HD"])
-            st.selectbox("Fokus Konten", ["🔥 Multi-Analisis AI", "Fokus Hook Utama"])
+            st.selectbox("Resolusi", ["720p HD", "1080p Full HD"], key="sel_resolusi")
+            st.selectbox("Fokus Konten", ["🔥 Multi-Analisis AI", "Fokus Hook Utama"], key="sel_fokus")
         
         if st.button("✨ Eksekusi Analisis", key="exec_analisis"):
             if link:
