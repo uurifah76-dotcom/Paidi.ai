@@ -27,7 +27,7 @@ if "active_menu" not in st.session_state:
 if "active_tab" not in st.session_state:
     st.session_state.active_tab = "Buat Klip"
 
-# State untuk pengaturan video/ekstraksi (agar tersimpan di menu Pengaturan)
+# State untuk pengaturan video/ekstraksi
 if "setting_subtitle" not in st.session_state: st.session_state.setting_subtitle = True
 if "setting_headline" not in st.session_state: st.session_state.setting_headline = True
 if "setting_rasio" not in st.session_state: st.session_state.setting_rasio = "9:16 (TikTok/Reels)"
@@ -43,48 +43,45 @@ if "menu" in st.query_params:
     else:
         st.session_state.active_menu = val_menu
 
-# 3. CSS Kustom untuk Mengunci Navigasi Bawah Secara Mutlak & Styling Komponen
-st.markdown(f"""
+# 3. CSS Kustom untuk Mengunci Navigasi Bawah & Komponen
+st.markdown("""
     <style>
-    [data-testid="stHeader"] {{ display: none !important; }}
-    [data-testid="stSidebar"] {{ display: none !important; }}
+    [data-testid="stHeader"] { display: none !important; }
+    [data-testid="stSidebar"] { display: none !important; }
     
-    .block-container {{ 
+    .block-container { 
         padding-top: 0rem !important; 
         margin-top: -20px !important;
         padding-bottom: 120px !important; 
-    }}
+    }
     
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
-    html, body, [class*="st-"] {{ font-family: 'Inter', sans-serif !important; }}
-    .stApp {{ background: linear-gradient(135deg, #050a0f, #101e2b); color: #e0e0e0; }}
-    h1, h2, h3 {{ color: #ffffff !important; font-weight: 800 !important; }}
+    html, body, [class*="st-"] { font-family: 'Inter', sans-serif !important; }
+    .stApp { background: linear-gradient(135deg, #050a0f, #101e2b); color: #e0e0e0; }
+    h1, h2, h3 { color: #ffffff !important; font-weight: 800 !important; }
     
-    .card {{ background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07); padding: 30px; border-radius: 16px; margin-bottom: 24px; }}
-    .promo-banner {{ background: linear-gradient(90deg, #0056b3, #00a8ff); padding: 20px; border-radius: 12px; text-align: center; color: white; margin-bottom: 24px; font-weight: 600; }}
-    .profile-box {{ background: rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 20px; text-align: center; border: 1px solid rgba(0, 123, 255, 0.2); }}
+    .card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07); padding: 30px; border-radius: 16px; margin-bottom: 24px; }
+    .promo-banner { background: linear-gradient(90deg, #0056b3, #00a8ff); padding: 20px; border-radius: 12px; text-align: center; color: white; margin-bottom: 24px; font-weight: 600; }
+    .profile-box { background: rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 20px; text-align: center; border: 1px solid rgba(0, 123, 255, 0.2); }
     
-    .profile-img-container {{ width: 110px; height: 140px; border-radius: 10px; overflow: hidden; margin: 0 auto 15px auto; border: 2px solid #00a8ff; box-shadow: 0 4px 15px rgba(0, 168, 255, 0.25); }}
-    .profile-img-container img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
+    .profile-img-container { width: 110px; height: 140px; border-radius: 10px; overflow: hidden; margin: 0 auto 15px auto; border: 2px solid #00a8ff; box-shadow: 0 4px 15px rgba(0, 168, 255, 0.25); }
+    .profile-img-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-    /* Styling tombol tab atas secara umum */
-    .stButton>button {{ width: 100%; border-radius: 50px; height: 3.2em; background-color: rgba(255, 255, 255, 0.04); color: #ffffff; font-weight: 600; font-size: 14px; border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.2s ease; }}
-    .stButton>button:hover {{ background-color: rgba(0, 168, 255, 0.2); border-color: #00a8ff; color: #00a8ff; }}
+    .stButton>button { width: 100%; border-radius: 50px; height: 3.2em; background-color: rgba(255, 255, 255, 0.04); color: #ffffff; font-weight: 600; font-size: 14px; border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.2s ease; }
+    .stButton>button:hover { background-color: rgba(0, 168, 255, 0.2); border-color: #00a8ff; color: #00a8ff; }
 
-    /* Paksa kolom tab atas sejajar menyamping */
-    div[data-testid="stHorizontalBlock"] {{
+    div[data-testid="stHorizontalBlock"] {
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: nowrap !important;
         gap: 8px !important;
-    }}
-    div[data-testid="stHorizontalBlock"] > div {{
+    }
+    div[data-testid="stHorizontalBlock"] > div {
         flex: 1 !important;
         min-width: 0 !important;
-    }}
+    }
 
-    /* KONTROL UTAMA BOTTOM NAVBAR AGAR FIXED */
-    .custom-bottom-nav {{
+    .custom-bottom-nav {
         position: fixed !important;
         bottom: 0 !important;
         left: 0 !important;
@@ -98,9 +95,9 @@ st.markdown(f"""
         padding: 10px 5px 15px 5px !important;
         z-index: 9999999 !important;
         box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.8) !important;
-    }}
+    }
     
-    .nav-item {{
+    .nav-item {
         text-align: center;
         color: #a0a0a0;
         text-decoration: none;
@@ -108,20 +105,20 @@ st.markdown(f"""
         font-weight: 600;
         flex: 1;
         transition: 0.2s;
-    }}
+    }
     
-    .nav-item.active {{
+    .nav-item.active {
         color: #00a8ff;
-    }}
+    }
     
-    .nav-item div:first-child {{
+    .nav-item div:first-child {
         font-size: 20px;
         margin-bottom: 2px;
-    }}
+    }
     </style>
     """, unsafe_allow_html=True)
 
-# 4. Header Utama (Logo ditarik ke atas)
+# 4. Header Utama
 st.markdown(f"""
     <div style="text-align: center; margin-top: -65px; margin-bottom: 10px;">
         <div style="margin-bottom: -15px;">
@@ -139,7 +136,7 @@ st.markdown(f"""
 # 5. Konten Berdasarkan Menu Utama
 if st.session_state.active_menu == "Beranda":
     
-    # Pill Tabs Atas dengan logika Callback langsung memperbarui state tab
+    # Tombol Tab Atas
     col_t1, col_t2, col_t3 = st.columns(3)
     
     with col_t1:
@@ -159,18 +156,18 @@ if st.session_state.active_menu == "Beranda":
 
     st.markdown("<p style='text-align: center; color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-top: 10px; margin-bottom: 20px;'>Tempel link, pilih mode, lalu AI proses klipnya.</p>", unsafe_allow_html=True)
 
-    # --- ISI TAB ATAS 1: BUAT KLIP ---
+    # --- TAB 1: BUAT KLIP ---
     if st.session_state.active_tab == "Buat Klip":
         st.markdown("""<div class="promo-banner">🚀 PROMO PELUNCURAN BETA: Klaim 5 Sesi Gratis + Diskon 50% untuk Paket Pro hari ini!</div>""", unsafe_allow_html=True)
 
         link = st.text_input("Tempel Tautan YouTube Anda", placeholder="https://www.youtube.com/watch?v=...")
         
-        st.info(f"💡 Konfigurasi Aktif Saat Ini (dari Pengaturan): Rasio **{st.session_state.setting_rasio}**, Resolusi **{st.session_state.setting_resolusi}**, Durasi **{st.session_state.setting_durasi}**, Fokus **{st.session_state.setting_fokus}**.")
+        st.info(f"💡 Konfigurasi Aktif: Rasio **{st.session_state.setting_rasio}** | Resolusi **{st.session_state.setting_resolusi}** | Durasi **{st.session_state.setting_durasi}** | Fokus **{st.session_state.setting_fokus}**")
         
         if st.button("✨ Eksekusi Analisis & Ekstrak AI", key="exec_analisis"):
             if link:
                 with st.spinner("🚀 AI sedang membaca video & mendeteksi bagian terbaik..."):
-                    st.success("Analisis berhasil! AI telah mendeteksi momen terbaik. Cek tab 'Klip Saya' untuk melihat hasilnya.")
+                    st.success("Analisis berhasil! AI telah mendeteksi momen terbaik. Cek tab 'Klip Saya'.")
             else:
                 st.warning("Masukkan tautan YouTube terlebih dahulu.")
 
@@ -189,7 +186,7 @@ if st.session_state.active_menu == "Beranda":
         </div>
         """, unsafe_allow_html=True)
 
-    # --- ISI TAB ATAS 2: KLIP SAYA (Maksimal 3 Klip untuk Free User) ---
+    # --- TAB 2: KLIP SAYA (Maksimal 3 Klip Free User) ---
     elif st.session_state.active_tab == "Klip Saya":
         st.markdown("### 🎬 Hasil Ekstraksi Klip AI (Free User: 3/3 Klip Siap)")
         st.markdown("<p style='color: rgba(255,255,255,0.7); font-size: 0.9rem;'>Berikut adalah hasil potongan video siap unduh lengkap dengan analisis potensi viral, caption, dan hashtag.</p>", unsafe_allow_html=True)
@@ -242,15 +239,15 @@ if st.session_state.active_menu == "Beranda":
         </div>
         """, unsafe_allow_html=True)
 
-    # --- ISI TAB ATAS 3: PENGATURAN ---
+    # --- TAB 3: PENGATURAN ---
     elif st.session_state.active_tab == "Pengaturan":
         st.markdown("### ⚙️ Pengaturan Fitur & Ekstraksi Konten AI")
-        st.markdown("<p style='color: rgba(255,255,255,0.7); font-size: 0.9rem;'>Sesuaikan preferensi subtitle, rasio, resolusi, dan fokus ekstraksi konten sesuai kebutuhan Anda.</p>", unsafe_allow_html=True)
+        st.markdown("<p style='color: rgba(255,255,255,0.7); font-size: 0.9rem;'>Sesuaikan preferensi subtitle, teks headline, rasio, resolusi, durasi, dan fokus ekstraksi konten Anda.</p>", unsafe_allow_html=True)
 
         with st.form("form_pengaturan"):
             st.markdown("#### 🎨 Preferensi Tampilan Video")
             sub_val = st.checkbox("Aktifkan Subtitle Teks Otomatis", value=st.session_state.setting_subtitle)
-            head_val = st.checkbox("Aktifkan Headline Judul Dinamis", value=st.session_state.setting_headline)
+            head_val = st.checkbox("Aktifkan Teks Headline Judul", value=st.session_state.setting_headline)
             
             c_set1, c_set2 = st.columns(2)
             with c_set1:
@@ -258,7 +255,10 @@ if st.session_state.active_menu == "Beranda":
                 durasi_val = st.selectbox("Durasi Klip", ["Pendek (15-30 detik)", "Standar (30-60 detik)"], index=["Pendek (15-30 detik)", "Standar (30-60 detik)"].index(st.session_state.setting_durasi))
             with c_set2:
                 resolusi_val = st.selectbox("Resolusi Video", ["720p HD", "1080p Full HD"], index=["720p HD", "1080p Full HD"].index(st.session_state.setting_resolusi))
-                fokus_val = st.selectbox("Fokus Ekstraksi Konten", ["Golden moment", "Emosional", "Potensi fyp"], index=["Golden moment", "Emosional", "Potensi fyp"].index(st.session_state.setting_fokus))
+                
+                # Fokus ekstraksi sesuai permintaan
+                fokus_list = ["Golden moment", "Emosional", "Potensi fyp"]
+                fokus_val = st.selectbox("Fokus Ekstraksi Konten", fokus_list, index=fokus_list.index(st.session_state.setting_fokus))
 
             submit_settings = st.form_submit_button("💾 Simpan Pengaturan")
             if submit_settings:
@@ -268,7 +268,7 @@ if st.session_state.active_menu == "Beranda":
                 st.session_state.setting_resolusi = resolusi_val
                 st.session_state.setting_durasi = durasi_val
                 st.session_state.setting_fokus = fokus_val
-                st.success("✅ Pengaturan berhasil disimpan secara permanen di sesi ini!")
+                st.success("✅ Pengaturan berhasil disimpan!")
 
     st.markdown("<br>", unsafe_allow_html=True)
     
@@ -337,7 +337,7 @@ elif st.session_state.active_menu == "Bantuan":
     </div>
     """, unsafe_allow_html=True)
 
-# 6. Render Navigasi Bawah Menggunakan HTML Murni agar Benar-Benar Mengambang & Fixed
+# 6. Render Navigasi Bawah Menggunakan HTML Murni
 active_beranda = "active" if st.session_state.active_menu == "Beranda" else ""
 active_pembayaran = "active" if st.session_state.active_menu == "Pembayaran" else ""
 active_affiliate = "active" if st.session_state.active_menu == "Affiliate" else ""
@@ -357,4 +357,9 @@ st.markdown(f"""
             <div>🤝</div>
             <div>Affiliate</div>
         </a>
-        <a href="?menu=Bantuan" target="_sel
+        <a href="?menu=Bantuan" target="_self" class="nav-item {active_bantuan}">
+            <div>❓</div>
+            <div>Bantuan</div>
+        </a>
+    </div>
+""", unsafe_allow_html=True)
