@@ -98,18 +98,20 @@ menu = st.sidebar.radio("", ["Beranda & Studio", "Kredit & Paket", "Program Affi
 
 # 4. Halaman Beranda & Studio
 if menu == "Beranda & Studio":
-    # Header: Memperbesar logo P secara drastis (sangat besar mendominasi) dan digeser rapat ke teks aidai.ai
+    # Header: Menyusun tata letak persis seperti gambar referensi (logo P di atas teks Aidi.ai dengan ukuran proporsional)
     st.markdown(f"""
-        <div style="display: flex; align-items: center; justify-content: center; margin-top: -25px; margin-bottom: 0px; text-align: center;">
-            <img src="data:image/png;base64,{logo_base64}" style="width: 130px; height: auto; margin-right: -10px; position: relative; z-index: 3; display: inline-block;">
-            <span style="font-size: 2.8rem; font-weight: 800; color: #ffffff; letter-spacing: -1px; line-height: 1; position: relative; z-index: 1; display: inline-block;">aidai.ai</span>
+        <div style="text-align: center; margin-top: -10px; margin-bottom: 10px;">
+            <div style="display: inline-block; position: relative;">
+                <img src="data:image/png;base64,{logo_base64}" style="width: 110px; display: block; margin: 0 auto -20px auto; position: relative; z-index: 2;">
+                <div style="font-size: 3rem; font-weight: 800; color: #ffffff; letter-spacing: -1px; line-height: 1; position: relative; z-index: 1;">Aidi.ai</div>
+            </div>
+            <div style="font-size: 2.5rem; font-weight: 800; color: #ffffff; margin-top: 2px; margin-bottom: 8px; letter-spacing: -1px; line-height: 1.1;">
+                Video Studio
+            </div>
+            <p style='color:#00a8ff; font-weight:700; font-size: 1.1rem; margin-top:0px; margin-bottom: 25px;'>
+                Ekstraksi Konten Sinematik
+            </p>
         </div>
-        <div style="font-size: 2.4rem; font-weight: 800; color: #ffffff; margin-top: -5px; margin-bottom: 8px; letter-spacing: -1px; line-height: 1.1; text-align: center;">
-            Video Studio
-        </div>
-        <p style='color:#00a8ff; font-weight:700; font-size: 1.1rem; margin-top:0px; margin-bottom: 25px; text-align: center;'>
-            Ekstraksi Konten Sinematik
-        </p>
     """, unsafe_allow_html=True)
     
     st.markdown("""
