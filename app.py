@@ -98,12 +98,12 @@ menu = st.sidebar.radio("", ["Beranda & Studio", "Kredit & Paket", "Program Affi
 
 # 4. Halaman Beranda & Studio
 if menu == "Beranda & Studio":
-    # Header: Memperbesar logo P menjadi 140px (sangat dominan/besar) dan menarik tulisan Aidi.ai merapat ke kiri dengan margin negatif yang kuat
+    # Header: Logo P besar berdampingan rapat dengan teks aidi.ai membentuk Paidi.ai
     st.markdown(f"""
         <div style="text-align: center; margin-top: -15px; margin-bottom: 15px;">
             <div style="display: inline-flex; align-items: center; justify-content: center;">
-                <img src="data:image/png;base64,{logo_base64}" style="height: 140px; width: auto; margin-right: -22px; position: relative; z-index: 2;">
-                <span style="font-size: 3rem; font-weight: 800; color: #ffffff; letter-spacing: -1px; line-height: 1; position: relative; z-index: 1;">Aidi.ai</span>
+                <img src="data:image/png;base64,{logo_base64}" style="height: 105px; width: auto; margin-right: -8px; position: relative; z-index: 2;">
+                <span style="font-size: 2.8rem; font-weight: 800; color: #ffffff; letter-spacing: -1px; line-height: 1; position: relative; z-index: 1;">aidi.ai</span>
             </div>
             <div style="font-size: 2.5rem; font-weight: 800; color: #ffffff; margin-top: 5px; margin-bottom: 8px; letter-spacing: -1px; line-height: 1.1;">
                 Video Studio
