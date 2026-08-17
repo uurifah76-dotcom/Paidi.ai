@@ -9,6 +9,7 @@ def get_base64_image(image_path):
     except Exception:
         return ""
 
+# Pastikan file gambar ada di folder yang sama
 img_base64 = get_base64_image("IMG-20260521-WA0022.jpg")
 logo_base64 = get_base64_image("47836-removebg-preview.png")
 
@@ -20,73 +21,24 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. CSS Kustom
+# 2. CSS Kustom untuk tampilan elegan
 st.markdown(f"""
     <style>
-    /* Hapus paksa teks navigasi otomatis */
     [data-testid="stHeader"] {{ display: none !important; }}
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
     
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
-    
-    html, body, [class*="st-"] {{
-        font-family: 'Inter', sans-serif !important;
-    }}
-    .stApp {{ 
-        background: linear-gradient(135deg, #050a0f, #101e2b); 
-        color: #e0e0e0; 
-    }}
+    html, body, [class*="st-"] {{ font-family: 'Inter', sans-serif !important; }}
+    .stApp {{ background: linear-gradient(135deg, #050a0f, #101e2b); color: #e0e0e0; }}
     h1, h2, h3 {{ color: #ffffff !important; font-weight: 800 !important; }}
     
-    .card {{
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.07);
-        padding: 30px;
-        border-radius: 16px;
-        margin-bottom: 24px;
-    }}
-    .promo-banner {{
-        background: linear-gradient(90deg, #0056b3, #00a8ff);
-        padding: 20px;
-        border-radius: 12px;
-        text-align: center;
-        color: white;
-        margin-bottom: 24px;
-        font-weight: 600;
-    }}
-    .profile-box {{
-        background: rgba(255, 255, 255, 0.05);
-        padding: 30px;
-        border-radius: 20px;
-        text-align: center;
-        border: 1px solid rgba(0, 123, 255, 0.2);
-    }}
+    .card {{ background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07); padding: 30px; border-radius: 16px; margin-bottom: 24px; }}
+    .promo-banner {{ background: linear-gradient(90deg, #0056b3, #00a8ff); padding: 20px; border-radius: 12px; text-align: center; color: white; margin-bottom: 24px; font-weight: 600; }}
+    .profile-box {{ background: rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 20px; text-align: center; border: 1px solid rgba(0, 123, 255, 0.2); }}
     
-    .profile-img-container {{
-        width: 110px;
-        height: 140px;
-        border-radius: 10px;
-        overflow: hidden;
-        margin: 0 auto 15px auto;
-        border: 2px solid #00a8ff;
-        box-shadow: 0 4px 15px rgba(0, 168, 255, 0.25);
-    }}
-    .profile-img-container img {{
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-    }}
+    .profile-img-container {{ width: 110px; height: 140px; border-radius: 10px; overflow: hidden; margin: 0 auto 15px auto; border: 2px solid #00a8ff; box-shadow: 0 4px 15px rgba(0, 168, 255, 0.25); }}
+    .profile-img-container img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
 
-    .stButton>button {{
-        width: 100%;
-        border-radius: 10px;
-        height: 3.5em;
-        background-color: #007bff;
-        color: white;
-        font-weight: 600;
-        font-size: 16px;
-        border: none;
-    }}
+    .stButton>button {{ width: 100%; border-radius: 10px; height: 3.5em; background-color: #007bff; color: white; font-weight: 600; font-size: 16px; border: none; }}
     .stButton>button:hover {{ background-color: #0056b3; }}
     </style>
     """, unsafe_allow_html=True)
@@ -96,29 +48,24 @@ st.sidebar.image("47836-removebg-preview.png", width=80)
 st.sidebar.markdown("### Navigasi Sistem")
 menu = st.sidebar.radio("", ["Beranda & Studio", "Kredit & Paket", "Program Affiliate", "Akun & Profil"])
 
-# 4. Halaman Beranda & Studio
+# 4. Halaman Beranda
 if menu == "Beranda & Studio":
-    # Header: Menggunakan tata letak persis gambar referensi (logo P besar di atas/menimpa huruf a pertama dengan margin negatif vertikal & horizontal yang pas)
+    # Header High-Impact
     st.markdown(f"""
-        <div style="text-align: center; margin-top: -15px; margin-bottom: 15px;">
-            <div style="display: inline-block; position: relative;">
-                <img src="data:image/png;base64,{logo_base64}" style="width: 115px; height: auto; display: block; margin: 0 auto -28px auto; position: relative; z-index: 2;">
-                <div style="font-size: 3rem; font-weight: 800; color: #ffffff; letter-spacing: -1px; line-height: 1; position: relative; z-index: 1;">aidi.ai</div>
+        <div style="text-align: center; margin-top: 10px; margin-bottom: 40px;">
+            <div style="margin-bottom: 15px;">
+                <img src="data:image/png;base64,{logo_base64}" style="width: 140px; height: auto; filter: drop-shadow(0px 0px 15px rgba(0, 168, 255, 0.3));">
             </div>
-            <div style="font-size: 2.5rem; font-weight: 800; color: #ffffff; margin-top: 5px; margin-bottom: 8px; letter-spacing: -1px; line-height: 1.1;">
+            <div style="font-size: 3.5rem; font-weight: 900; color: #ffffff; letter-spacing: -2px; line-height: 1;">
+                Paidi.ai
+            </div>
+            <div style="font-size: 1.3rem; font-weight: 500; color: #00a8ff; margin-top: 10px; letter-spacing: 4px; text-transform: uppercase; border-top: 1px solid #00a8ff; display: inline-block; padding-top: 10px;">
                 Video Studio
             </div>
-            <p style='color:#00a8ff; font-weight:700; font-size: 1.1rem; margin-top:0px; margin-bottom: 25px;'>
-                Ekstraksi Konten Sinematik
-            </p>
         </div>
     """, unsafe_allow_html=True)
     
-    st.markdown("""
-    <div class="promo-banner">
-        🚀 PROMO PELUNCURAN BETA: Klaim 5 Sesi Gratis + Diskon 50% untuk Paket Pro hari ini!
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("""<div class="promo-banner">🚀 PROMO PELUNCURAN BETA: Klaim 5 Sesi Gratis + Diskon 50% untuk Paket Pro hari ini!</div>""", unsafe_allow_html=True)
 
     st.subheader("🛠️ Studio Pemrosesan")
     link = st.text_input("Tempel Tautan YouTube Anda", placeholder="https://www.youtube.com/watch?v=...")
@@ -157,14 +104,13 @@ if menu == "Beranda & Studio":
     st.markdown("""
     <div class="card" style="border-left: 4px solid #007bff;">
         <p style="font-size: 14px; line-height: 1.6; margin-bottom: 12px;">
-            <strong>PT Paidi.ai Group</strong> didirikan pada tahun <strong>2026</strong> di Kota Malang, Jawa Timur oleh <strong>Usman Shidiq</strong>. Kami berkomitmen membangun fondasi perangkat lunak rintisan berbasis kecerdasan buatan untuk revolusi konten digital Indonesia.
+            <strong>PT Paidi.ai Group</strong> didirikan pada tahun <strong>2026</strong> di Kota Malang, Jawa Timur oleh <strong>Usman Shidiq</strong>.
         </p>
         <hr style="border-color: rgba(255,255,255,0.1); margin: 14px 0;">
         <p style="font-size: 13px; margin: 0; opacity: 0.9; line-height: 1.6;">
-            📍 <strong>Alamat Kantor:</strong> Ruko WOW Sawojajar, Kec. Kedungkandang, Kota Malang, Jawa Timur 65139<br>
-            📞 <strong>WhatsApp Korporat:</strong> 083853413171<br>
-            ✉️ <strong>Layanan Gmail Resmi:</strong> support@paidi.ai / usmancipanky@gmail.com<br>
-            📱 <strong>Media Sosial:</strong> TikTok & Instagram (@Paidi.ai.idn)
+            📍 <strong>Alamat Kantor:</strong> Ruko WOW Sawojajar, Kota Malang<br>
+            📞 <strong>WhatsApp:</strong> 083853413171<br>
+            ✉️ <strong>Email:</strong> support@paidi.ai
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -179,4 +125,4 @@ elif menu == "Program Affiliate":
 
 elif menu == "Akun & Profil":
     st.markdown("# 👤 Akun & Profil")
-    st.write("Informasi lengkap akun akan muncul di sini.")
+    st.write("Informasi akun Anda.")
