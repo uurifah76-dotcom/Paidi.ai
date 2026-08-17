@@ -98,16 +98,16 @@ menu = st.sidebar.radio("", ["Beranda & Studio", "Kredit & Paket", "Program Affi
 
 # 4. Halaman Beranda & Studio
 if menu == "Beranda & Studio":
-    # Header: Logo P jauh lebih besar dan ditarik menimpa/masuk ke area teks aidai.ai agar menyatu sempurna
+    # Header: Memperbesar logo P secara drastis (sangat besar mendominasi) dan digeser rapat ke teks aidai.ai
     st.markdown(f"""
-        <div style="display: flex; align-items: flex-end; margin-top: -20px; margin-bottom: 5px; justify-content: center; text-align: center;">
-            <img src="data:image/png;base64,{logo_base64}" style="height: 140px; margin-right: -45px; margin-bottom: -15px; position: relative; z-index: 3;">
-            <span style="font-size: 2.5rem; font-weight: 800; color: #ffffff; letter-spacing: -1px; line-height: 1; position: relative; z-index: 1;">aidai.ai</span>
+        <div style="display: flex; align-items: center; justify-content: center; margin-top: -25px; margin-bottom: 0px; text-align: center;">
+            <img src="data:image/png;base64,{logo_base64}" style="width: 130px; height: auto; margin-right: -10px; position: relative; z-index: 3; display: inline-block;">
+            <span style="font-size: 2.8rem; font-weight: 800; color: #ffffff; letter-spacing: -1px; line-height: 1; position: relative; z-index: 1; display: inline-block;">aidai.ai</span>
         </div>
-        <div style="font-size: 2.3rem; font-weight: 800; color: #ffffff; margin-bottom: 8px; letter-spacing: -1px; line-height: 1.1; text-align: center;">
+        <div style="font-size: 2.4rem; font-weight: 800; color: #ffffff; margin-top: -5px; margin-bottom: 8px; letter-spacing: -1px; line-height: 1.1; text-align: center;">
             Video Studio
         </div>
-        <p style='color:#00a8ff; font-weight:700; font-size: 1.05rem; margin-top:0px; margin-bottom: 25px; text-align: center;'>
+        <p style='color:#00a8ff; font-weight:700; font-size: 1.1rem; margin-top:0px; margin-bottom: 25px; text-align: center;'>
             Ekstraksi Konten Sinematik
         </p>
     """, unsafe_allow_html=True)
