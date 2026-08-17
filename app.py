@@ -20,7 +20,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 2. CSS Kustom untuk Sticky Bottom Navigation & Layout Mobile
+# 2. CSS Kustom untuk Sticky Bottom Navigation yang Kuat & Rapi
 st.markdown(f"""
     <style>
     [data-testid="stHeader"] {{ display: none !important; }}
@@ -29,7 +29,7 @@ st.markdown(f"""
     .block-container {{ 
         padding-top: 0rem !important; 
         margin-top: -20px !important;
-        padding-bottom: 100px !important; /* Ruang agar konten terbawah tidak tertutup nav bar */
+        padding-bottom: 110px !important; /* Ruang kosong bawah agar konten tidak tertutup nav bar */
     }}
     
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
@@ -60,20 +60,22 @@ st.markdown(f"""
         min-width: 0 !important;
     }}
 
-    /* STICKY BOTTOM NAVIGATION BAR PERSIS REFERENSI */
-    .fixed-bottom-nav {{
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background: rgba(13, 22, 34, 0.95);
-        backdrop-filter: blur(12px);
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
-        padding: 10px 0 15px 0;
-        z-index: 999999;
-        display: flex;
-        justify-content: space-around;
-        box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+    /* MENGUNCI POSISI BOTTOM NAVIGATION BAR AGAR TIDAK IKUT TER-SCROLL */
+    .st-key-bottom_beranda, .st-key-bottom_pembayaran, .st-key-bottom_affiliate, .st-key-bottom_bantuan {{
+        width: 100% !important;
+    }}
+    
+    .floating-nav-container {{
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        background: rgba(10, 17, 26, 0.95) !important;
+        backdrop-filter: blur(12px) !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+        padding: 10px 10px 15px 10px !important;
+        z-index: 999999 !important;
+        box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.6) !important;
     }}
     </style>
     """, unsafe_allow_html=True)
@@ -241,8 +243,8 @@ elif st.session_state.active_menu == "Bantuan":
     </div>
     """, unsafe_allow_html=True)
 
-# 5. Render Sticky Bottom Navigation Bar (Menempel di bawah & tidak tertutup saat digeser)
-st.markdown('<div class="fixed-bottom-nav">', unsafe_allow_html=True)
+# 5. Render Floating Bottom Navigation Bar (Terkunci permanen di bawah layar)
+st.markdown('<div class="floating-nav-container">', unsafe_allow_html=True)
 b_col1, b_col2, b_col3, b_col4 = st.columns(4)
 
 with b_col1:
