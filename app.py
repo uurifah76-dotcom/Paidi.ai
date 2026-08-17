@@ -9,7 +9,6 @@ def get_base64_image(image_path):
     except Exception:
         return ""
 
-# Pastikan file gambar ada di direktori yang sama
 img_base64 = get_base64_image("IMG-20260521-WA0022.jpg")
 logo_base64 = get_base64_image("47836-removebg-preview.png")
 
@@ -21,11 +20,14 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. CSS Kustom (Mengurangi jarak kosong atas & styling elemen)
+# 2. CSS Kustom - Menghilangkan padding atas secara total agar tidak ada ruang kosong
 st.markdown(f"""
     <style>
     [data-testid="stHeader"] {{ display: none !important; }}
-    .block-container {{ padding-top: 1rem !important; }}
+    .block-container {{ 
+        padding-top: 0rem !important; 
+        margin-top: -20px !important;
+    }}
     
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
     html, body, [class*="st-"] {{ font-family: 'Inter', sans-serif !important; }}
@@ -51,16 +53,16 @@ menu = st.sidebar.radio("", ["Beranda & Studio", "Kredit & Paket", "Program Affi
 
 # 4. Halaman Beranda & Studio
 if menu == "Beranda & Studio":
-    # Header dengan Logo 450px dan margin-top ditarik ke atas agar padat & elegan
+    # Header ditarik ke atas dengan margin negatif yang lebih kuat dan logo 550px
     st.markdown(f"""
-        <div style="text-align: center; margin-top: -30px; margin-bottom: 20px;">
-            <div style="margin-bottom: 5px;">
-                <img src="data:image/png;base64,{logo_base64}" style="width: 450px; height: auto; filter: drop-shadow(0px 0px 30px rgba(0, 168, 255, 0.3));">
+        <div style="text-align: center; margin-top: -60px; margin-bottom: 10px;">
+            <div style="margin-bottom: -15px;">
+                <img src="data:image/png;base64,{logo_base64}" style="width: 550px; height: auto; filter: drop-shadow(0px 0px 35px rgba(0, 168, 255, 0.35));">
             </div>
-            <div style="font-size: 3.5rem; font-weight: 900; color: #ffffff; letter-spacing: -2px; line-height: 1;">
+            <div style="font-size: 3.5rem; font-weight: 900; color: #ffffff; letter-spacing: -2px; line-height: 1; position: relative; z-index: 2;">
                 Paidi.ai
             </div>
-            <div style="font-size: 1.2rem; font-weight: 400; color: #00a8ff; margin-top: 5px; letter-spacing: 5px; text-transform: uppercase;">
+            <div style="font-size: 1.2rem; font-weight: 400; color: #00a8ff; margin-top: 2px; letter-spacing: 5px; text-transform: uppercase; position: relative; z-index: 2;">
                 Video Studio
             </div>
         </div>
