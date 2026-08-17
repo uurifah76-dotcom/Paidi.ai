@@ -98,16 +98,16 @@ menu = st.sidebar.radio("", ["Beranda & Studio", "Kredit & Paket", "Program Affi
 
 # 4. Halaman Beranda & Studio
 if menu == "Beranda & Studio":
-    # Header: Menggabungkan Logo P sebagai pengganti huruf P dengan tulisan "aidai.ai Video Studio"
+    # Header: Logo P diperbesar melebihi teks, digeser ke kanan, diposisikan agak ke atas dan ke tengah
     st.markdown(f"""
-        <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 5px; flex-wrap: wrap;">
-            <img src="data:image/png;base64,{logo_base64}" style="height: 52px; vertical-align: middle; margin-right: -2px;">
-            <span style="font-size: 2.3rem; font-weight: 800; color: #ffffff; letter-spacing: -1px; line-height: 1;">aidai.ai</span>
+        <div style="display: flex; align-items: flex-end; gap: 8px; margin-top: -10px; margin-bottom: 5px; flex-wrap: wrap; justify-content: center; text-align: center;">
+            <img src="data:image/png;base64,{logo_base64}" style="height: 75px; margin-bottom: -4px;">
+            <span style="font-size: 2.5rem; font-weight: 800; color: #ffffff; letter-spacing: -1px; line-height: 1;">aidai.ai</span>
         </div>
-        <div style="font-size: 2.1rem; font-weight: 800; color: #ffffff; margin-bottom: 10px; letter-spacing: -1px; line-height: 1.1;">
+        <div style="font-size: 2.3rem; font-weight: 800; color: #ffffff; margin-bottom: 8px; letter-spacing: -1px; line-height: 1.1; text-align: center;">
             Video Studio
         </div>
-        <p style='color:#00a8ff; font-weight:700; font-size: 1rem; margin-top:0px; margin-bottom: 25px;'>
+        <p style='color:#00a8ff; font-weight:700; font-size: 1.05rem; margin-top:0px; margin-bottom: 25px; text-align: center;'>
             Ekstraksi Konten Sinematik
         </p>
     """, unsafe_allow_html=True)
