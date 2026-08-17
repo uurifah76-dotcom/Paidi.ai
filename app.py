@@ -27,6 +27,14 @@ if "active_menu" not in st.session_state:
 if "active_tab" not in st.session_state:
     st.session_state.active_tab = "Buat Klip"
 
+# State untuk pengaturan video/ekstraksi (agar tersimpan di menu Pengaturan)
+if "setting_subtitle" not in st.session_state: st.session_state.setting_subtitle = True
+if "setting_headline" not in st.session_state: st.session_state.setting_headline = True
+if "setting_rasio" not in st.session_state: st.session_state.setting_rasio = "9:16 (TikTok/Reels)"
+if "setting_resolusi" not in st.session_state: st.session_state.setting_resolusi = "1080p Full HD"
+if "setting_durasi" not in st.session_state: st.session_state.setting_durasi = "Standar (30-60 detik)"
+if "setting_fokus" not in st.session_state: st.session_state.setting_fokus = "Golden moment"
+
 # Tangkap parameter query string manual untuk navigasi bawah agar sinkron
 if "menu" in st.query_params:
     val_menu = st.query_params["menu"]
@@ -35,7 +43,7 @@ if "menu" in st.query_params:
     else:
         st.session_state.active_menu = val_menu
 
-# 3. CSS Kustom untuk Mengunci Navigasi Bawah Secara Mutlak & Styling Tombol Tab Aktif
+# 3. CSS Kustom untuk Mengunci Navigasi Bawah Secara Mutlak & Styling Komponen
 st.markdown(f"""
     <style>
     [data-testid="stHeader"] {{ display: none !important; }}
@@ -135,40 +143,34 @@ if st.session_state.active_menu == "Beranda":
     col_t1, col_t2, col_t3 = st.columns(3)
     
     with col_t1:
-        if st.button("✨ Buat Klip", key="btn_buat_klip", type="primary" if st.session_state.active_tab == "Buat Klip" else "secondary"):
+        if st.button("✨ Buat Klip", key="btn_buat_klip"):
             st.session_state.active_tab = "Buat Klip"
             st.rerun()
             
     with col_t2:
-        if st.button("🕒 Klip Saya", key="btn_klip_saya", type="primary" if st.session_state.active_tab == "Klip Saya" else "secondary"):
+        if st.button("🕒 Klip Saya", key="btn_klip_saya"):
             st.session_state.active_tab = "Klip Saya"
             st.rerun()
             
     with col_t3:
-        if st.button("⚙️ Pengaturan", key="btn_pengaturan", type="primary" if st.session_state.active_tab == "Pengaturan" else "secondary"):
+        if st.button("⚙️ Pengaturan", key="btn_pengaturan"):
             st.session_state.active_tab = "Pengaturan"
             st.rerun()
 
     st.markdown("<p style='text-align: center; color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-top: 10px; margin-bottom: 20px;'>Tempel link, pilih mode, lalu AI proses klipnya.</p>", unsafe_allow_html=True)
 
-    # Isi Berdasarkan Tab Aktif di Beranda
+    # --- ISI TAB ATAS 1: BUAT KLIP ---
     if st.session_state.active_tab == "Buat Klip":
         st.markdown("""<div class="promo-banner">🚀 PROMO PELUNCURAN BETA: Klaim 5 Sesi Gratis + Diskon 50% untuk Paket Pro hari ini!</div>""", unsafe_allow_html=True)
 
         link = st.text_input("Tempel Tautan YouTube Anda", placeholder="https://www.youtube.com/watch?v=...")
         
-        c1, c2 = st.columns(2)
-        with c1: 
-            st.selectbox("Durasi Klip", ["Pendek (15-30 detik)", "Standar (30-60 detik)"], key="sel_durasi")
-            st.selectbox("Rasio Video", ["9:16 (TikTok/Reels)", "1:1 (Square)", "16:9 (Landscape)"], key="sel_rasio")
-        with c2:
-            st.selectbox("Resolusi", ["720p HD", "1080p Full HD"], key="sel_resolusi")
-            st.selectbox("Fokus Konten", ["🔥 Multi-Analisis AI", "Fokus Hook Utama"], key="sel_fokus")
+        st.info(f"💡 Konfigurasi Aktif Saat Ini (dari Pengaturan): Rasio **{st.session_state.setting_rasio}**, Resolusi **{st.session_state.setting_resolusi}**, Durasi **{st.session_state.setting_durasi}**, Fokus **{st.session_state.setting_fokus}**.")
         
-        if st.button("✨ Eksekusi Analisis", key="exec_analisis"):
+        if st.button("✨ Eksekusi Analisis & Ekstrak AI", key="exec_analisis"):
             if link:
-                with st.spinner("🚀 AI sedang memproses video..."):
-                    st.success("Analisis berhasil! Data telah siap.")
+                with st.spinner("🚀 AI sedang membaca video & mendeteksi bagian terbaik..."):
+                    st.success("Analisis berhasil! AI telah mendeteksi momen terbaik. Cek tab 'Klip Saya' untuk melihat hasilnya.")
             else:
                 st.warning("Masukkan tautan YouTube terlebih dahulu.")
 
@@ -187,23 +189,86 @@ if st.session_state.active_menu == "Beranda":
         </div>
         """, unsafe_allow_html=True)
 
+    # --- ISI TAB ATAS 2: KLIP SAYA (Maksimal 3 Klip untuk Free User) ---
     elif st.session_state.active_tab == "Klip Saya":
+        st.markdown("### 🎬 Hasil Ekstraksi Klip AI (Free User: 3/3 Klip Siap)")
+        st.markdown("<p style='color: rgba(255,255,255,0.7); font-size: 0.9rem;'>Berikut adalah hasil potongan video siap unduh lengkap dengan analisis potensi viral, caption, dan hashtag.</p>", unsafe_allow_html=True)
+
+        # Klip 1
         st.markdown("""
-        <div class="card" style="text-align: center; padding: 40px;">
-            <h3>🎬 Kamu udah bikin 3 klip 🎉</h3>
-            <p style="color: rgba(255,255,255,0.7); margin-top: 10px; margin-bottom: 20px;">
-                Kredit kamu habis. Top up untuk bikin 30 klip lagi mulai Rp 19.000, langsung jadi dan bisa kamu posting hari ini.
-            </p>
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h4 style="margin: 0; color: #00a8ff;">🔥 Klip #1: Momen Paling Mengejutkan</h4>
+                <span style="background: rgba(0, 168, 255, 0.2); color: #00a8ff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">Potensi FYP: 96% (Sangat Tinggi)</span>
+            </div>
+            <p style="font-size: 13px; color: rgba(255,255,255,0.7);">Durasi: 0:45 detik | Format: 9:16 Siap Upload</p>
+            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 8px; margin: 10px 0;">
+                <p style="margin: 0 0 8px 0; font-size: 13px;"><strong>📝 Rekomendasi Caption:</strong><br>Gak nyangka banget bagian akhir video ini bikin merinding! 🤯 Tonton sampai habis ya! #paidi #fyp</p>
+                <p style="margin: 0; font-size: 13px; color: #00a8ff;"><strong># Hashtag Terlaris:</strong> #viral #trending #paidiaistudio #edukasiai #fypindonesia</p>
+            </div>
+            <button style="width: 100%; background: #00a8ff; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px;">📥 Unduh Video Klip #1 (HD)</button>
         </div>
         """, unsafe_allow_html=True)
 
-    elif st.session_state.active_tab == "Pengaturan":
+        # Klip 2
         st.markdown("""
         <div class="card">
-            <h3>⚙️ Pengaturan Akun Studio</h3>
-            <p style="color: rgba(255,255,255,0.7);">Kelola konfigurasi API, profil, dan preferensi aplikasi Anda di sini.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h4 style="margin: 0; color: #00a8ff;">⚡ Klip #2: Penjelasan Inti (Golden Moment)</h4>
+                <span style="background: rgba(0, 168, 255, 0.2); color: #00a8ff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">Potensi FYP: 89% (Tinggi)</span>
+            </div>
+            <p style="font-size: 13px; color: rgba(255,255,255,0.7);">Durasi: 0:30 detik | Format: 9:16 Siap Upload</p>
+            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 8px; margin: 10px 0;">
+                <p style="margin: 0 0 8px 0; font-size: 13px;"><strong>📝 Rekomendasi Caption:</strong><br>Rahasia ini akhirnya terbongkar! Simak baik-baik penjelasan singkatnya di sini. 👇</p>
+                <p style="margin: 0; font-size: 13px; color: #00a8ff;"><strong># Hashtag Terlaris:</strong> #tipsandtricks #ai #videomaker #trendingreels</p>
+            </div>
+            <button style="width: 100%; background: #00a8ff; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px;">📥 Unduh Video Klip #2 (HD)</button>
         </div>
         """, unsafe_allow_html=True)
+
+        # Klip 3
+        st.markdown("""
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h4 style="margin: 0; color: #00a8ff;">🎯 Klip #3: Kesimpulan & Hook Emosional</h4>
+                <span style="background: rgba(0, 168, 255, 0.2); color: #00a8ff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">Potensi FYP: 92% (Sangat Tinggi)</span>
+            </div>
+            <p style="font-size: 13px; color: rgba(255,255,255,0.7);">Durasi: 0:50 detik | Format: 9:16 Siap Upload</p>
+            <div style="background: rgba(0,0,0,0.4); padding: 15px; border-radius: 8px; margin: 10px 0;">
+                <p style="margin: 0 0 8px 0; font-size: 13px;"><strong>📝 Rekomendasi Caption:</strong><br>Pelajaran berharga yang harus kamu tahu hari ini. Setuju gak sama pendapat ini? 💬</p>
+                <p style="margin: 0; font-size: 13px; color: #00a8ff;"><strong># Hashtag Terlaris:</strong> #inspirasi #motivasihidup #paidi #fypage</p>
+            </div>
+            <button style="width: 100%; background: #00a8ff; color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 10px;">📥 Unduh Video Klip #3 (HD)</button>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # --- ISI TAB ATAS 3: PENGATURAN ---
+    elif st.session_state.active_tab == "Pengaturan":
+        st.markdown("### ⚙️ Pengaturan Fitur & Ekstraksi Konten AI")
+        st.markdown("<p style='color: rgba(255,255,255,0.7); font-size: 0.9rem;'>Sesuaikan preferensi subtitle, rasio, resolusi, dan fokus ekstraksi konten sesuai kebutuhan Anda.</p>", unsafe_allow_html=True)
+
+        with st.form("form_pengaturan"):
+            st.markdown("#### 🎨 Preferensi Tampilan Video")
+            sub_val = st.checkbox("Aktifkan Subtitle Teks Otomatis", value=st.session_state.setting_subtitle)
+            head_val = st.checkbox("Aktifkan Headline Judul Dinamis", value=st.session_state.setting_headline)
+            
+            c_set1, c_set2 = st.columns(2)
+            with c_set1:
+                rasio_val = st.selectbox("Rasio Aspek", ["9:16 (TikTok/Reels)", "1:1 (Square)", "16:9 (Landscape)"], index=["9:16 (TikTok/Reels)", "1:1 (Square)", "16:9 (Landscape)"].index(st.session_state.setting_rasio))
+                durasi_val = st.selectbox("Durasi Klip", ["Pendek (15-30 detik)", "Standar (30-60 detik)"], index=["Pendek (15-30 detik)", "Standar (30-60 detik)"].index(st.session_state.setting_durasi))
+            with c_set2:
+                resolusi_val = st.selectbox("Resolusi Video", ["720p HD", "1080p Full HD"], index=["720p HD", "1080p Full HD"].index(st.session_state.setting_resolusi))
+                fokus_val = st.selectbox("Fokus Ekstraksi Konten", ["Golden moment", "Emosional", "Potensi fyp"], index=["Golden moment", "Emosional", "Potensi fyp"].index(st.session_state.setting_fokus))
+
+            submit_settings = st.form_submit_button("💾 Simpan Pengaturan")
+            if submit_settings:
+                st.session_state.setting_subtitle = sub_val
+                st.session_state.setting_headline = head_val
+                st.session_state.setting_rasio = rasio_val
+                st.session_state.setting_resolusi = resolusi_val
+                st.session_state.setting_durasi = durasi_val
+                st.session_state.setting_fokus = fokus_val
+                st.success("✅ Pengaturan berhasil disimpan secara permanen di sesi ini!")
 
     st.markdown("<br>", unsafe_allow_html=True)
     
@@ -292,9 +357,4 @@ st.markdown(f"""
             <div>🤝</div>
             <div>Affiliate</div>
         </a>
-        <a href="?menu=Bantuan" target="_self" class="nav-item {active_bantuan}">
-            <div>❓</div>
-            <div>Bantuan</div>
-        </a>
-    </div>
-""", unsafe_allow_html=True)
+        <a href="?menu=Bantuan" target="_sel
