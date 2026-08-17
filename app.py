@@ -1,328 +1,292 @@
 import streamlit as st
 import base64
 
-# 1. Konfigurasi Halaman (Light Mode ala SaaS Modern & KlipAja.id)
+# Fungsi untuk konversi gambar lokal ke base64
+def get_base64_image(image_path):
+    try:
+        with open(image_path, "rb") as img_file:
+            return base64.b64encode(img_file.read()).decode()
+    except Exception:
+        return ""
+
+img_base64 = get_base64_image("IMG-20260521-WA0022.jpg")
+logo_base64 = get_base64_image("47836-removebg-preview.png")
+
+# 1. Konfigurasi Halaman
 st.set_page_config(
     page_title="Paidi.ai | AI Video Studio",
-    page_icon="🤖",
+    page_icon="47836-removebg-preview.png",
     layout="centered",
     initial_sidebar_state="collapsed"
 )
 
-# 2. Inisialisasi Session State
-if "active_menu" not in st.session_state: st.session_state.active_menu = "Beranda"
-if "active_tab" not in st.session_state: st.session_state.active_tab = "Buat Klip"
-if "credits" not in st.session_state: st.session_state.credits = 0  # Sesuaikan dengan database Anda
-
-# Cek parameter query string untuk navigasi bawah
+# Cek parameter query string manual untuk navigasi bawah tanpa merusak halaman
 query_params = st.query_params
 if "menu" in query_params:
     st.session_state.active_menu = query_params["menu"]
 
-# 3. CSS Kustom Full Meniru Konsep KlipAja.id
-st.markdown("""
+# Inisialisasi Session State
+if "active_menu" not in st.session_state:
+    st.session_state.active_menu = "Beranda"
+
+if "active_tab" not in st.session_state:
+    st.session_state.active_tab = "Buat Klip"
+
+# 2. CSS Kustom untuk Mengunci Navigasi Bawah Secara Mutlak (Fixed Bottom Navbar)
+st.markdown(f"""
     <style>
-    [data-testid="stHeader"] { display: none !important; }
-    [data-testid="stSidebar"] { display: none !important; }
+    [data-testid="stHeader"] {{ display: none !important; }}
+    [data-testid="stSidebar"] {{ display: none !important; }}
     
-    .block-container { 
-        padding-top: 1rem !important; 
-        padding-bottom: 110px !important; 
-        max-width: 600px !important;
-    }
+    .block-container {{ 
+        padding-top: 0rem !important; 
+        margin-top: -20px !important;
+        padding-bottom: 120px !important; /* Ruang aman agar konten paling bawah tidak tertutup nav bar */
+    }}
     
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-    html, body, [class*="st-"] { font-family: 'Inter', sans-serif !important; }
-    .stApp { background-color: #fcfcfc; color: #111827; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
+    html, body, [class*="st-"] {{ font-family: 'Inter', sans-serif !important; }}
+    .stApp {{ background: linear-gradient(135deg, #050a0f, #101e2b); color: #e0e0e0; }}
+    h1, h2, h3 {{ color: #ffffff !important; font-weight: 800 !important; }}
     
-    /* Top Header */
-    .top-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 5px 0 15px 0;
-        margin-bottom: 15px;
-        border-bottom: 1px solid #f3f4f6;
-    }
-    .brand-logo {
-        font-size: 1.4rem;
-        font-weight: 800;
-        color: #111827;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        letter-spacing: -0.5px;
-    }
-    .brand-logo span { color: #f59e0b; } /* Warna kuning/emas khas KlipAja */
+    .card {{ background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07); padding: 30px; border-radius: 16px; margin-bottom: 24px; }}
+    .promo-banner {{ background: linear-gradient(90deg, #0056b3, #00a8ff); padding: 20px; border-radius: 12px; text-align: center; color: white; margin-bottom: 24px; font-weight: 600; }}
+    .profile-box {{ background: rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 20px; text-align: center; border: 1px solid rgba(0, 123, 255, 0.2); }}
     
-    .header-right {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    .credit-badge {
-        background: #fffbeb;
-        color: #d97706;
-        padding: 6px 14px;
-        border-radius: 20px;
-        font-weight: 700;
-        font-size: 0.85rem;
-        border: 1px solid #fde68a;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-    }
-    .user-avatar {
-        background: #111827;
-        color: white;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        font-size: 0.9rem;
-    }
+    .profile-img-container {{ width: 110px; height: 140px; border-radius: 10px; overflow: hidden; margin: 0 auto 15px auto; border: 2px solid #00a8ff; box-shadow: 0 4px 15px rgba(0, 168, 255, 0.25); }}
+    .profile-img-container img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
 
-    /* Cards */
-    .card-box {
-        background: #ffffff;
-        border: 1px solid #e5e7eb;
-        padding: 20px;
-        border-radius: 16px;
-        margin-bottom: 16px;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-    }
-    
-    .promo-card {
-        background: #fffbeb;
-        border: 1px solid #fde68a;
-        padding: 20px;
-        border-radius: 16px;
-        margin-bottom: 20px;
-    }
+    /* Styling tombol tab atas */
+    .stButton>button {{ width: 100%; border-radius: 50px; height: 3.2em; background-color: rgba(255, 255, 255, 0.04); color: #ffffff; font-weight: 600; font-size: 14px; border: 1px solid rgba(255, 255, 255, 0.1); }}
+    .stButton>button:hover {{ background-color: rgba(0, 168, 255, 0.2); border-color: #00a8ff; color: #00a8ff; }}
 
-    /* Fixed Bottom Navigation Bar */
-    .custom-bottom-nav {
+    /* Paksa kolom tab atas sejajar menyamping */
+    div[data-testid="stHorizontalBlock"] {{
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: 8px !important;
+    }}
+    div[data-testid="stHorizontalBlock"] > div {{
+        flex: 1 !important;
+        min-width: 0 !important;
+    }}
+
+    /* KONTROL UTAMA BOTTOM NAVBAR AGAR FIXED DAN TIDAK BISA TERTUTUP SCROLL */
+    .custom-bottom-nav {{
         position: fixed !important;
         bottom: 0 !important;
         left: 0 !important;
         width: 100% !important;
-        background: #ffffff !important;
-        border-top: 1px solid #e5e7eb !important;
+        background: rgba(10, 17, 26, 0.98) !important;
+        backdrop-filter: blur(15px) !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
         display: flex !important;
         justify-content: space-around !important;
         align-items: center !important;
-        padding: 10px 0 15px 0 !important;
-        z-index: 999999 !important;
-    }
-    .nav-item {
+        padding: 10px 5px 15px 5px !important;
+        z-index: 9999999 !important;
+        box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.8) !important;
+    }}
+    
+    .nav-item {{
         text-align: center;
-        color: #9ca3af;
+        color: #a0a0a0;
         text-decoration: none;
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 600;
         flex: 1;
-    }
-    .nav-item.active {
-        color: #f59e0b;
-    }
-    .nav-item div:first-child {
+        transition: 0.2s;
+    }}
+    
+    .nav-item.active {{
+        color: #00a8ff;
+    }}
+    
+    .nav-item div:first-child {{
         font-size: 20px;
         margin-bottom: 2px;
-    }
+    }}
     </style>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
-# 4. Header Atas Paidi.ai
+# 3. Header Utama (Logo 550px ditarik ke atas)
 st.markdown(f"""
-    <div class="top-header">
-        <a href="?menu=Beranda" target="_self" class="brand-logo">
-            Paidi<span>.ai</span>
-        </a>
-        <div class="header-right">
-            <div class="credit-badge">⚡ {st.session_state.credits}</div>
-            <div class="user-avatar">P</div>
+    <div style="text-align: center; margin-top: -65px; margin-bottom: 10px;">
+        <div style="margin-bottom: -15px;">
+            <img src="data:image/png;base64,{logo_base64}" style="width: 550px; height: auto; filter: drop-shadow(0px 0px 35px rgba(0, 168, 255, 0.35));">
+        </div>
+        <div style="font-size: 3.5rem; font-weight: 900; color: #ffffff; letter-spacing: -2px; line-height: 1; position: relative; z-index: 2;">
+            Paidi.ai
+        </div>
+        <div style="font-size: 1.2rem; font-weight: 400; color: #00a8ff; margin-top: 2px; letter-spacing: 5px; text-transform: uppercase; position: relative; z-index: 2;">
+            Video Studio
         </div>
     </div>
 """, unsafe_allow_html=True)
 
-# Tombol simulasi testing kredit
-col_sim1, col_sim2 = st.columns(2)
-with col_sim1:
-    if st.button("Simulasi: Kredit Habis (0)"):
-        st.session_state.credits = 0
-        st.rerun()
-with col_sim2:
-    if st.button("Simulasi: Ada Kredit (3)"):
-        st.session_state.credits = 3
-        st.rerun()
-
-# 5. Routing Halaman Berdasarkan Menu Utama
+# 4. Konten Berdasarkan Menu Utama
 if st.session_state.active_menu == "Beranda":
     
-    # Sub-tabs Horizontal Sejajar dari Kiri ke Kanan (Gaya KlipAja)
-    st1, st2, st3 = st.columns(3)
-    with st1:
-        btn_type_1 = "primary" if st.session_state.active_tab == "Buat Klip" else "secondary"
-        if st.button("✨ Buat Klip", key="tb_buat", use_container_width=True, type=btn_type_1): 
+    # Pill Tabs Sejajar Menyamping di Atas Konten
+    col_t1, col_t2, col_t3 = st.columns(3)
+    with col_t1:
+        if st.button("✨ Buat Klip", key="btn_buat_klip"):
             st.session_state.active_tab = "Buat Klip"
             st.rerun()
-    with st2:
-        btn_type_2 = "primary" if st.session_state.active_tab == "Klip Saya" else "secondary"
-        if st.button("🕒 Klip Saya", key="tb_klip", use_container_width=True, type=btn_type_2): 
+    with col_t2:
+        if st.button("🕒 Klip Saya", key="btn_klip_saya"):
             st.session_state.active_tab = "Klip Saya"
             st.rerun()
-    with st3:
-        btn_type_3 = "primary" if st.session_state.active_tab == "Pengaturan" else "secondary"
-        if st.button("⚙️ Pengaturan", key="tb_set", use_container_width=True, type=btn_type_3): 
+    with col_t3:
+        if st.button("⚙️ Pengaturan", key="btn_pengaturan"):
             st.session_state.active_tab = "Pengaturan"
             st.rerun()
 
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-top: 10px; margin-bottom: 20px;'>Tempel link, pilih mode, lalu AI proses klipnya.</p>", unsafe_allow_html=True)
 
+    # Isi Berdasarkan Tab Aktif
     if st.session_state.active_tab == "Buat Klip":
-        
-        # PROMOSI / NOTIFIKASI KREDIT HABIS Khas KlipAja
-        if st.session_state.credits == 0:
-            st.markdown("""
-                <div class="promo-card">
-                    <h3 style="margin-top:0; color:#b45309; font-size:1.15rem;">Kredit Paidi kamu habis! 🎉</h3>
-                    <p style="color: #78350f; font-size: 0.88rem; line-height: 1.5; margin-bottom: 15px;">
-                        Top up sekarang untuk melanjutkan pembuatan konten AI Anda. Proses instan dan siap diposting.
-                    </p>
-                </div>
-            """, unsafe_allow_html=True)
-            if st.button("⚡ Top up untuk bikin lagi", key="btn_topup_redirect", use_container_width=True):
-                st.session_state.active_menu = "Pembayaran"
-                st.rerun()
-            st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown("""<div class="promo-banner">🚀 PROMO PELUNCURAN BETA: Klaim 5 Sesi Gratis + Diskon 50% untuk Paket Pro hari ini!</div>""", unsafe_allow_html=True)
 
-        # Form Input Link YouTube
-        st.markdown("### Tempel Link YouTube", unsafe_allow_html=True)
-        link = st.text_input("Tempel Tautan YouTube Anda", placeholder="https://youtube.com/watch?v=...", label_visibility="collapsed")
+        link = st.text_input("Tempel Tautan YouTube Anda", placeholder="https://www.youtube.com/watch?v=...")
         
-        if st.button("✨ Eksekusi Analisis", key="exec_main", use_container_width=True):
-            if st.session_state.credits <= 0:
-                st.warning("Kredit Anda habis! Silakan lakukan Top Up terlebih dahulu.")
-            elif link:
-                with st.spinner("Paidi.ai sedang memproses video..."):
-                    st.success("Analisis selesai dan klip berhasil dibuat!")
+        c1, c2 = st.columns(2)
+        with c1: 
+            st.selectbox("Durasi Klip", ["Pendek (15-30 detik)", "Standar (30-60 detik)"])
+            st.selectbox("Rasio Video", ["9:16 (TikTok/Reels)", "1:1 (Square)", "16:9 (Landscape)"])
+        with c2:
+            st.selectbox("Resolusi", ["720p HD", "1080p Full HD"])
+            st.selectbox("Fokus Konten", ["🔥 Multi-Analisis AI", "Fokus Hook Utama"])
+        
+        if st.button("✨ Eksekusi Analisis", key="exec_analisis"):
+            if link:
+                with st.spinner("🚀 AI sedang memproses video..."):
+                    st.success("Analisis berhasil! Data telah siap.")
             else:
                 st.warning("Masukkan tautan YouTube terlebih dahulu.")
 
-        st.markdown("<hr style='border: 0; border-top: 1px solid #f3f4f6; margin: 25px 0;'>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align: center; color: #9ca3af; font-size: 0.85rem;'>atau mulai dari video populer</p>", unsafe_allow_html=True)
-        
-        # Contoh List Video Populer
-        videos = [
-            ("Bedah Isi Otak Dibalik Bisnis Trili...", "Sulianto Indria Putra"),
-            ("Bapak Anak Suka Investasi", "Raditya Dika"),
-            ("Live Trading 5 Miliar, Jadi Berapa...", "Sulianto Indria Putra")
-        ]
-        for title, channel in videos:
-            st.markdown(f"""
-                <div class="card-box" style="padding: 12px 16px; display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
-                    <div style="background: #f3f4f6; width: 70px; height: 45px; border-radius: 8px; flex-shrink: 0;"></div>
-                    <div>
-                        <div style="font-weight: 600; font-size: 0.9rem; color: #111827;">{title}</div>
-                        <div style="font-size: 0.75rem; color: #9ca3af;">{channel}</div>
-                    </div>
-                </div>
-            """, unsafe_allow_html=True)
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.subheader("👤 Tentang Founder")
+        st.markdown(f"""
+        <div class="profile-box">
+            <div class="profile-img-container">
+                <img src="data:image/jpeg;base64,{img_base64}">
+            </div>
+            <h3 style="margin-top:10px; margin-bottom:5px;">Usman Shidiq</h3>
+            <p style="color:#00a8ff; font-weight:600; margin-bottom:15px;">Founder & CEO of Paidi.ai</p>
+            <p style="font-size:0.95em; line-height:1.6; opacity:0.9; max-width: 500px; margin: 0 auto;">
+                "Misi kami adalah mendemokratisasi teknologi editing video. Paidi.ai hadir untuk membantu kreator Indonesia memangkas waktu produksi tanpa mengorbankan kualitas konten."
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
 
     elif st.session_state.active_tab == "Klip Saya":
         st.markdown("""
-            <div class="card-box" style="text-align: center; padding: 40px 20px;">
-                <h3>🎬 Daftar Klip Anda</h3>
-                <p style="color: #9ca3af; font-size: 0.9rem;">Belum ada klip yang dirender. Mulai buat klip pertamamu!</p>
-            </div>
+        <div class="card" style="text-align: center; padding: 40px;">
+            <h3>🎬 Kamu udah bikin 3 klip 🎉</h3>
+            <p style="color: rgba(255,255,255,0.7); margin-top: 10px; margin-bottom: 20px;">
+                Kredit kamu habis. Top up untuk bikin 30 klip lagi mulai Rp 19.000, langsung jadi dan bisa kamu posting hari ini.
+            </p>
+        </div>
         """, unsafe_allow_html=True)
 
     elif st.session_state.active_tab == "Pengaturan":
-        st.markdown("### ⚙️ Pengaturan Studio & AI")
-        st.selectbox("Durasi Klip", ["Pendek (15-30 detik)", "Standar (30-60 detik)"])
-        st.selectbox("Rasio Video", ["9:16 (TikTok/Reels)", "1:1 (Square)", "16:9 (Landscape)"])
-        st.selectbox("Resolusi", ["720p HD", "1080p Full HD"])
-        st.success("Konfigurasi tersimpan otomatis.")
+        st.markdown("""
+        <div class="card">
+            <h3>⚙️ Pengaturan Akun Studio</h3>
+            <p style="color: rgba(255,255,255,0.7);">Kelola konfigurasi API, profil, dan preferensi aplikasi Anda di sini.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    st.markdown("### 📜 Legalitas & Keamanan Platform")
+    st.markdown("""
+    <div class="card" style="border-left: 4px solid #00a8ff;">
+        <p style="font-size: 14px; line-height: 1.6; margin-bottom: 12px;">
+            <strong>Paidi.ai</strong> beroperasi dengan menjunjung tinggi standar legalitas dan pelindungan data pengguna di Indonesia. Seluruh pemrosesan kecerdasan buatan mematuhi regulasi privasi yang berlaku.
+        </p>
+        <hr style="border-color: rgba(255,255,255,0.1); margin: 14px 0;">
+        <p style="font-size: 13px; margin: 0; opacity: 0.9; line-height: 1.6;">
+            🛡️ <strong>Kepatuhan Data:</strong> Perlindungan Data Pribadi (UU PDP)<br>
+            📄 <strong>Ketentuan Layanan:</strong> Hak Cipta Konten & Kebijakan Penggunaan Wajar (Fair Use AI)<br>
+            🔒 <strong>Keamanan:</strong> Enskripsi End-to-End untuk setiap berkas media yang diproses
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    st.markdown("### 🏢 Informasi Korporat & Kontak Resmi")
+    st.markdown("""
+    <div class="card" style="border-left: 4px solid #007bff; background: rgba(0, 0, 0, 0.2);">
+        <p style="font-size: 14px; line-height: 1.6; margin-bottom: 12px;">
+            <strong>PT Paidi.ai Group</strong> didirikan pada tahun <strong>2026</strong> di Kota Malang, Jawa Timur oleh <strong>Usman Shidiq</strong>. Kami berkomitmen membangun fondasi perangkat lunak rintisan berbasis kecerdasan buatan untuk revolusi konten digital Indonesia.
+        </p>
+        <hr style="border-color: rgba(255,255,255,0.1); margin: 14px 0;">
+        <p style="font-size: 13px; margin: 0; opacity: 0.9; line-height: 1.6;">
+            📍 <strong>Alamat Kantor:</strong> Ruko WOW Sawojajar, Kec. Kedungkandang, Kota Malang, Jawa Timur 65139<br>
+            📞 <strong>WhatsApp Korporat:</strong> 083853413171<br>
+            ✉️ <strong>Layanan Gmail Resmi:</strong> support@paidi.ai / usmancipanky@gmail.com<br>
+            📱 <strong>Media Sosial:</strong> TikTok & Instagram (@Paidi.ai.idn)
+        </p>
+        <div style="text-align: center; margin-top: 20px; font-size: 12px; opacity: 0.6;">
+            © 2026 PT Paidi.ai Group. Hak Cipta Dilindungi Undang-Undang.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 elif st.session_state.active_menu == "Pembayaran":
-    st.markdown("<h2>Top Up Kredit</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='color: #6b7280; font-size: 0.9rem;'>Beli kredit untuk memproses video YouTube di Paidi.ai.</p>", unsafe_allow_html=True)
-    
-    st.markdown(f"""
-        <div class="card-box">
-            <div style="font-size: 0.85rem; color: #6b7280;">Saldo Kredit Anda</div>
-            <div style="font-size: 1.8rem; font-weight: 800; color: #f59e0b; margin: 5px 0;">{st.session_state.credits} kredit</div>
-        </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("### Pilih Paket", unsafe_allow_html=True)
+    st.markdown("# 💳 Pembayaran & Paket")
     st.markdown("""
-        <div class="card-box" style="border: 2px solid #f59e0b;">
-            <h3 style="margin: 0; color: #111827;">Paket Kreator Pro</h3>
-            <p style="color: #6b7280; font-size: 0.85rem; margin: 5px 0 15px 0;">Cocok untuk konten kreator aktif</p>
-            <div style="font-size: 1.5rem; font-weight: 800; color: #111827; margin-bottom: 15px;">Rp 29.000</div>
-            <ul style="padding-left: 20px; font-size: 0.85rem; color: #4b5563; line-height: 1.8; margin-bottom: 20px;">
-                <li>50 Kredit AI Video</li>
-                <li>Tanpa Watermark</li>
-                <li>Subtitle Karaoke Otomatis</li>
-            </ul>
-        </div>
+    <div class="card">
+        <h3>Sisa Sesi Anda</h3>
+        <p style="font-size: 1.5rem; font-weight: bold; color: #00a8ff;">5 / 10 Sesi</p>
+        <hr style="border-color: rgba(255,255,255,0.1); margin: 14px 0;">
+        <p>Top up paket Anda untuk membuat lebih banyak klip video sinematik berkualitas tinggi.</p>
+    </div>
     """, unsafe_allow_html=True)
-    
-    if st.button("Beli Paket Pro", key="buy_pro", use_container_width=True):
-        st.session_state.credits += 50
-        st.success("Berhasil Top Up 50 Kredit!")
-        st.rerun()
 
 elif st.session_state.active_menu == "Affiliate":
-    st.markdown("<h2>Affiliate Paidi.ai</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='color: #6b7280; font-size: 0.9rem;'>Ajak kreator lain dan dapatkan komisi menarik.</p>", unsafe_allow_html=True)
+    st.markdown("# 🤝 Program Affiliate")
     st.markdown("""
-        <div class="card-box" style="text-align: center; padding: 30px;">
-            <div style="font-size: 2rem; font-weight: 900; color: #111827;">20% - 30%</div>
-            <p style="color: #6b7280; font-size: 0.85rem; margin-top: 10px;">
-                Komisi dari setiap top-up pertama kreator yang Anda undang ke platform Paidi.ai.
-            </p>
-        </div>
+    <div class="card">
+        <h3>Dapatkan Penghasilan Tambahan</h3>
+        <p>Bagikan link referral unik Anda kepada kreator lain dan dapatkan komisi menarik dari setiap transaksi yang berhasil.</p>
+    </div>
     """, unsafe_allow_html=True)
 
 elif st.session_state.active_menu == "Bantuan":
-    st.markdown("<h2>Pusat Bantuan</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='color: #6b7280; font-size: 0.9rem;'>Hubungi tim dukungan Paidi.ai.</p>", unsafe_allow_html=True)
-    
-    st.link_button("💬 Chat WhatsApp CS", "https://wa.me/6283853413171", use_container_width=True)
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("# ❓ Pusat Bantuan & Kontak")
     st.markdown("""
-        <div class="card-box" style="text-align: center; padding: 25px;">
-            <div style="font-size: 1rem; font-weight: 700; color: #111827; margin-bottom: 8px;">Butuh Panduan Lain?</div>
-            <p style="color: #6b7280; font-size: 0.85rem;">Tim kami siap membantu kendala teknis atau pertanyaan Anda.</p>
-        </div>
+    <div class="card">
+        <h3>Butuh Bantuan?</h3>
+        <p>Tim dukungan PT Paidi.ai Group siap membantu Anda melalui WhatsApp resmi di <strong>083853413171</strong> atau melalui email ke <strong>support@paidi.ai</strong>.</p>
+    </div>
     """, unsafe_allow_html=True)
 
-# 6. Render Navigasi Bawah Mengambang Ala KlipAja
-active_b = "active" if st.session_state.active_menu == "Beranda" else ""
-active_p = "active" if st.session_state.active_menu == "Pembayaran" else ""
-active_a = "active" if st.session_state.active_menu == "Affiliate" else ""
-active_h = "active" if st.session_state.active_menu == "Bantuan" else ""
+# 5. Render Navigasi Bawah Menggunakan HTML Murni agar Benar-Benar Mengambang & Fixed
+active_beranda = "active" if st.session_state.active_menu == "Beranda" else ""
+active_pembayaran = "active" if st.session_state.active_menu == "Pembayaran" else ""
+active_affiliate = "active" if st.session_state.active_menu == "Affiliate" else ""
+active_bantuan = "active" if st.session_state.active_menu == "Bantuan" else ""
 
 st.markdown(f"""
     <div class="custom-bottom-nav">
-        <a href="?menu=Beranda" target="_self" class="nav-item {active_b}">
+        <a href="?menu=Beranda" target="_self" class="nav-item {active_beranda}">
             <div>🏠</div>
             <div>Beranda</div>
         </a>
-        <a href="?menu=Pembayaran" target="_self" class="nav-item {active_p}">
+        <a href="?menu=Pembayaran" target="_self" class="nav-item {active_pembayaran}">
             <div>💳</div>
             <div>Pembayaran</div>
         </a>
-        <a href="?menu=Affiliate" target="_self" class="nav-item {active_a}">
+        <a href="?menu=Affiliate" target="_self" class="nav-item {active_affiliate}">
             <div>🤝</div>
             <div>Affiliate</div>
         </a>
-        <a href="?menu=Bantuan" target="_self" class="nav-item {active_h}">
+        <a href="?menu=Bantuan" target="_self" class="nav-item {active_bantuan}">
             <div>❓</div>
             <div>Bantuan</div>
         </a>
