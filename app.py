@@ -8,7 +8,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. CSS Kustom untuk Tampilan Profesional & Pemangkasan Foto Profil Menjadi Lingkaran Sempurna
+# 2. CSS Kustom untuk Lingkaran Sempurna & Desain Profesional
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
@@ -28,7 +28,6 @@ st.markdown("""
         padding: 30px;
         border-radius: 16px;
         margin-bottom: 24px;
-        transition: 0.3s;
     }
     .promo-banner {
         background: linear-gradient(90deg, #0056b3, #00a8ff);
@@ -46,15 +45,22 @@ st.markdown("""
         text-align: center;
         border: 1px solid rgba(0, 123, 255, 0.2);
     }
-    /* Membuat foto profil menjadi lingkaran sempurna dan tajam */
-    .profile-img img {
+    
+    /* MEMAKSA FOTO MENJADI LINGKARAN SEMPURNA DAN TAJAM */
+    img[data-testid="stImage"] {
         border-radius: 50% !important;
-        width: 140px !important;
-        height: 140px !important;
+        object-fit: cover !important;
+    }
+    .profile-avatar img {
+        width: 130px !important;
+        height: 130px !important;
+        border-radius: 50% !important;
         object-fit: cover !important;
         border: 3px solid #00a8ff !important;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        display: block;
+        margin: 0 auto;
     }
+
     .stButton>button {
         width: 100%;
         border-radius: 10px;
@@ -64,7 +70,6 @@ st.markdown("""
         font-weight: 600;
         font-size: 16px;
         border: none;
-        transition: 0.3s;
     }
     .stButton>button:hover { background-color: #0056b3; }
     </style>
@@ -121,14 +126,14 @@ if menu == "Beranda & Studio":
     with c_f2:
         st.markdown("<div class='card'><h4>2. Deep Scanning</h4><p style='font-size:0.9em; opacity:0.8;'>AI menyeleksi momen terbaik untuk engagement maksimal.</p></div>", unsafe_allow_html=True)
 
-    # Profil Founder (Dengan Bingkai Foto Lingkaran Sempurna)
+    # Profil Founder (Diikat dengan Kelas Lingkaran Khusus)
     st.subheader("👤 Tentang Founder")
     st.markdown('<div class="profile-box">', unsafe_allow_html=True)
     
     _, col_img, _ = st.columns([1, 1.2, 1])
     with col_img: 
-        st.markdown('<div class="profile-img">', unsafe_allow_html=True)
-        st.image("IMG-20260521-WA0022.jpg", width=140)
+        st.markdown('<div class="profile-avatar">', unsafe_allow_html=True)
+        st.image("IMG-20260521-WA0022.jpg")
         st.markdown('</div>', unsafe_allow_html=True)
         
     st.markdown("""
@@ -140,7 +145,7 @@ if menu == "Beranda & Studio":
     </div>
     """, unsafe_allow_html=True)
 
-    # Informasi Korporat Lengkap di Bagian Bawah
+    # Informasi Korporat Lengkap
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("### 🏢 Informasi Korporat & Kontak Resmi")
     st.markdown("""
@@ -158,7 +163,7 @@ if menu == "Beranda & Studio":
     </div>
     """, unsafe_allow_html=True)
 
-# 5. Halaman Tambahan (Navigasi)
+# 5. Halaman Tambahan
 elif menu == "Kredit & Paket":
     st.markdown("# 💳 Kredit & Paket")
     st.write("Sisa sesi Anda: **5 / 10 Sesi**")
