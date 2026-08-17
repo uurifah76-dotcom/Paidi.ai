@@ -8,7 +8,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 2. Inisialisasi Session State untuk Navigasi
+# 2. Inisialisasi Session State (Termasuk Konfigurasi Pengaturan)
 if "active_menu" not in st.session_state: 
     st.session_state.active_menu = "Beranda"
 if "active_tab" not in st.session_state: 
@@ -16,12 +16,17 @@ if "active_tab" not in st.session_state:
 if "credits" not in st.session_state: 
     st.session_state.credits = 5  # Contoh sisa kredit default
 
+# State untuk konfigurasi pengaturan
+if "cfg_durasi" not in st.session_state: st.session_state.cfg_durasi = "Standar (30-60 detik)"
+if "cfg_rasio" not in st.session_state: st.session_state.cfg_rasio = "9:16 (TikTok/Reels)"
+if "cfg_resolusi" not in st.session_state: st.session_state.cfg_resolusi = "1080p Full HD"
+
 # Tangkap navigasi dari query parameter bawah jika ada
 query_params = st.query_params
 if "menu" in query_params:
     st.session_state.active_menu = query_params["menu"]
 
-# 3. CSS Kustom Sesuai Tampilan Dark Mode Anda
+# 3. CSS Kustom Sesuai Tampilan Dark Mode
 st.markdown("""
     <style>
     [data-testid="stHeader"] { display: none !important; }
@@ -90,23 +95,28 @@ st.markdown("""
 # 5. Logika Navigasi Berdasarkan Menu Utama
 if st.session_state.active_menu == "Beranda":
     
-    # Menggunakan Segmented Control bawaan Streamlit untuk tombol horizontal yang stabil & interaktif
-    selected_tab = st.segmented_control(
-        "Pilih Menu Utama",
-        options=["✨ Buat Klip", "🕒 Klip Saya", "⚙️ Pengaturan"],
-        default=st.session_state.active_tab,
-        label_visibility="collapsed"
-    )
-    
-    # Sinkronisasi state tab jika berubah
-    if selected_tab and selected_tab != st.session_state.active_tab:
-        st.session_state.active_tab = selected_tab
-        st.rerun()
+    # Tombol Tab Horizontal Sejajar dari Kiri ke Kanan
+    st1, st2, st3 = st.columns(3)
+    with st1:
+        btn_type_1 = "primary" if st.session_state.active_tab == "Buat Klip" else "secondary"
+        if st.button("✨ Buat Klip", key="tb_buat", use_container_width=True, type=btn_type_1): 
+            st.session_state.active_tab = "Buat Klip"
+            st.rerun()
+    with st2:
+        btn_type_2 = "primary" if st.session_state.active_tab == "Klip Saya" else "secondary"
+        if st.button("🕒 Klip Saya", key="tb_klip", use_container_width=True, type=btn_type_2): 
+            st.session_state.active_tab = "Klip Saya"
+            st.rerun()
+    with st3:
+        btn_type_3 = "primary" if st.session_state.active_tab == "Pengaturan" else "secondary"
+        if st.button("⚙️ Pengaturan", key="tb_set", use_container_width=True, type=btn_type_3): 
+            st.session_state.active_tab = "Pengaturan"
+            st.rerun()
 
     st.markdown("<br>", unsafe_allow_html=True)
 
     # Konten Berdasarkan Tab yang Aktif
-    if st.session_state.active_tab == "✨ Buat Klip":
+    if st.session_state.active_tab == "Buat Klip":
         
         # Banner Promo / Kredit
         if st.session_state.credits <= 0:
@@ -127,20 +137,29 @@ if st.session_state.active_menu == "Beranda":
                 </div>
             """, unsafe_allow_html=True)
 
-        # Form Input Link YouTube
+        # Form Input Link YouTube (Bersih dari menu konfigurasi)
         st.markdown("<p style='color: #9ca3af; font-size: 0.85rem; margin-bottom: 5px;'>Tempel Tautan YouTube Anda</p>", unsafe_allow_html=True)
         link = st.text_input("Link YouTube", placeholder="https://youtube.com/watch?v=...", label_visibility="collapsed")
+        
+        # Ringkasan konfigurasi aktif saat ini (opsional untuk informasi user)
+        st.markdown(f"""
+            <div style="font-size: 0.75rem; color: #9ca3af; margin: 10px 0 15px 0;">
+                🛠️ Mode Aktif: <span style="color: #38bdf8;">{st.session_state.cfg_durasi}</span> | <span style="color: #38bdf8;">{st.session_state.cfg_rasio}</span>
+            </div>
+        """, unsafe_allow_html=True)
         
         if st.button("✨ Eksekusi Analisis Klip", use_container_width=True):
             if st.session_state.credits <= 0:
                 st.warning("Kredit Anda habis! Silakan lakukan top up.")
             elif link:
                 with st.spinner("Paidi.ai sedang memproses video..."):
-                    st.success("Klip berhasil dibuat!")
+                    # Di sini Anda bisa menggunakan variabel: 
+                    # st.session_state.cfg_durasi, st.session_state.cfg_rasio, st.session_state.cfg_resolusi
+                    st.success("Klip berhasil dibuat berdasarkan pengaturan Anda!")
             else:
                 st.warning("Silakan masukkan tautan YouTube terlebih dahulu.")
 
-    elif st.session_state.active_tab == "🕒 Klip Saya":
+    elif st.session_state.active_tab == "Klip Saya":
         st.markdown("""
             <div class="card-box" style="text-align: center; padding: 30px;">
                 <h3 style="color: #ffffff; font-size: 1.1rem;">Daftar Klip Tersimpan</h3>
@@ -148,12 +167,31 @@ if st.session_state.active_menu == "Beranda":
             </div>
         """, unsafe_allow_html=True)
 
-    elif st.session_state.active_tab == "⚙️ Pengaturan":
+    elif st.session_state.active_tab == "Pengaturan":
         st.markdown("""<div class="card-box">""", unsafe_allow_html=True)
-        st.markdown("<h3 style='color: #ffffff; font-size: 1.1rem; margin-top:0;'>Pengaturan Studio AI</h3>", unsafe_allow_html=True)
-        st.selectbox("Durasi Klip", ["Pendek (15-30 detik)", "Standar (30-60 detik)"])
-        st.selectbox("Rasio Video", ["9:16 (TikTok/Reels)", "1:1 (Square)", "16:9 (Landscape)"])
-        st.selectbox("Resolusi Hasil", ["720p HD", "1080p Full HD"])
+        st.markdown("<h3 style='color: #ffffff; font-size: 1.1rem; margin-top:0;'>⚙️ Pengaturan Studio AI</h3>", unsafe_allow_html=True)
+        st.markdown("<p style='color: #9ca3af; font-size: 0.8rem;'>Konfigurasi di bawah ini akan otomatis diterapkan saat Anda memproses klip baru.</p>", unsafe_allow_html=True)
+        
+        # Input Pengaturan yang tersimpan ke Session State
+        st.session_state.cfg_durasi = st.selectbox(
+            "Durasi Klip", 
+            ["Pendek (15-30 detik)", "Standar (30-60 detik)", "Panjang (60-90 detik)"],
+            index=["Pendek (15-30 detik)", "Standar (30-60 detik)", "Panjang (60-90 detik)"].index(st.session_state.cfg_durasi)
+        )
+        
+        st.session_state.cfg_rasio = st.selectbox(
+            "Rasio Video", 
+            ["9:16 (TikTok/Reels)", "1:1 (Square)", "16:9 (Landscape)"],
+            index=["9:16 (TikTok/Reels)", "1:1 (Square)", "16:9 (Landscape)"].index(st.session_state.cfg_rasio)
+        )
+        
+        st.session_state.cfg_resolusi = st.selectbox(
+            "Resolusi Hasil", 
+            ["720p HD", "1080p Full HD", "4K Ultra"],
+            index=["720p HD", "1080p Full HD", "4K Ultra"].index(st.session_state.cfg_resolusi)
+        )
+        
+        st.success("✨ Konfigurasi tersimpan otomatis.")
         st.markdown("</div>", unsafe_allow_html=True)
 
 elif st.session_state.active_menu == "Pembayaran":
