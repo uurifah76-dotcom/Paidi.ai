@@ -98,10 +98,10 @@ menu = st.sidebar.radio("", ["Beranda & Studio", "Kredit & Paket", "Program Affi
 
 # 4. Halaman Beranda & Studio
 if menu == "Beranda & Studio":
-    # Header: Logo P diperbesar jauh lebih besar dari judul dan digeser ke kiri mendekati 'aidai.ai'
+    # Header: Logo P jauh lebih besar dan ditarik menimpa/masuk ke area teks aidai.ai agar menyatu sempurna
     st.markdown(f"""
-        <div style="display: flex; align-items: flex-end; margin-top: -15px; margin-bottom: 5px; justify-content: center; text-align: center;">
-            <img src="data:image/png;base64,{logo_base64}" style="height: 110px; margin-right: -18px; margin-bottom: -10px; position: relative; z-index: 2;">
+        <div style="display: flex; align-items: flex-end; margin-top: -20px; margin-bottom: 5px; justify-content: center; text-align: center;">
+            <img src="data:image/png;base64,{logo_base64}" style="height: 140px; margin-right: -45px; margin-bottom: -15px; position: relative; z-index: 3;">
             <span style="font-size: 2.5rem; font-weight: 800; color: #ffffff; letter-spacing: -1px; line-height: 1; position: relative; z-index: 1;">aidai.ai</span>
         </div>
         <div style="font-size: 2.3rem; font-weight: 800; color: #ffffff; margin-bottom: 8px; letter-spacing: -1px; line-height: 1.1; text-align: center;">
